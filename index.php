@@ -84,6 +84,7 @@ echo "<br>";*/
     var_dump($_SESSION);
     echo "<h1>TEST GIT</h1>";
     echo "<h2> TEST BRANCHE </h2>";
+    echo "<h3> last test </h3>";
     ?>
     </div>
 
