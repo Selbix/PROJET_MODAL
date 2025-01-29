@@ -50,6 +50,7 @@ if($askedPage == "connexion"){
 }
 else if(isset($_GET['id'])){
     $askedPage = "page_livre";
+    $pageTitle = "Livre";
     $lien = "styles.css";
     $authorized = checkPage($askedPage);
 }
