@@ -82,6 +82,7 @@ echo "<br>";*/
     <div id="content" class="content">
     <?php require "{$askedPage}.php";
     var_dump($_SESSION);
+    echo "<h1>TEST GIT</h1>"
     ?>
     </div>
 
