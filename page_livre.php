@@ -1,5 +1,5 @@
 <?php
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['loggedIn'])) {
     echo '
     <style>
         /* Ensure the body background is blurred */
@@ -108,8 +108,8 @@ var_dump($books);
             <div class="action-buttons2">
                 <a href="download.php?id=<?php echo $books[0]['id']; ?>" class="btn2 btn-download2">Download</a>
                 <a target = "_blank" href="books/<?php echo $books[0]['id']; ?>.pdf" class="btn2 btn-read2">Read</a>
-                <button class="btn2 btn-like2">👍</button>
-            </div>
+                <button class="btn2 btn-like2" onclick="likeBook(<?php echo $books[0]['id']; ?>, <?php echo $_SESSION['user']['id']; ?>)">👍</button>
+                </div>
             <div class="rating2">
                 <div class="stars2">★★★★★</div>
                 <div>Nombre de votants</div>
@@ -117,3 +117,27 @@ var_dump($books);
         </div>
     </div>
 </body>
+<script>
+function likeBook(bookId, userId) {
+    let formData = new FormData();
+    formData.append("book_id", bookId);
+    formData.append("user_id", userId); // Send user ID from frontend
+
+    fetch("like.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data); // Debugging
+        if (data.status === "success") {
+            alert("Book liked successfully! ✅");
+        } else if (data.message === "Already liked") {
+            alert("You have already liked this book. ❤️");
+        } else {
+            alert("Error: " + data.message);
+        }
+    })
+    .catch(error => console.error("Error:", error));
+}
+</script>
