@@ -1,0 +1,246 @@
+/* Navigation Styles */
+body {
+    background-color: #263248;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+header {
+    background-color: #2d4b2d;
+
+}
+
+.ontop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: #2d4b2d !important;
+    margin-top: 0;
+}
+.custom-nav {
+    background-color: #2d4b2d !important;
+    padding: 0.5rem 1rem;
+}
+
+/* Updated logo styles */
+.nav-logo {
+    height: 60px; /* Increased from 40px */
+}
+
+.navbar-brand {
+    margin-right: 2rem;
+    padding: 0; /* Added to remove default padding */
+    display: flex; /* Added to ensure proper logo alignment */
+    align-items: center; /* Added to vertically center the logo */
+}
+
+/* Rest of the styles remain the same */
+.nav-link {
+    color: white !important;
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem !important;
+}
+
+.nav-link:hover {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Search Form Styles */
+.search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-input {
+    background-color: #1e2937;
+    border: none;
+    color: white;
+    padding-right: 40px;
+    width: 250px;
+}
+
+.search-input::placeholder {
+    color: #6b7280;
+}
+
+.btn-search {
+    position: absolute;
+    right: 0;
+    background-color: #22c55e;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 4px;
+}
+
+.btn-search i {
+    color: white;
+}
+
+.btn-filter {
+    background-color: white;
+    border-radius: 4px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* AJOUTER.PHP STYLES */
+.container {
+    background-color: #1a202c;
+    margin-top: 100px;
+    margin-bottom : 25px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 60%;
+}
+
+.container h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    color : white;
+}
+
+.container label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color : white;
+}
+
+.container input, .container textarea {
+    width: calc(100% - 20px); /* Adjust width to account for padding */
+    padding: 8px 10px;
+    margin-bottom: 15px; /* Increase bottom margin for better spacing */
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    background-color: #1a202c;
+    color: #e2e8f0;
+    box-sizing: border-box; /* Ensure padding is included in the width */
+}
+
+.container textarea {
+    resize: vertical;
+}
+
+.container button {
+    background-color: #3b82f6;
+    color: #e2e8f0;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%; /* Make the button full width */
+    margin-top: 10px;
+}
+
+.container button:hover {
+    background-color: #2563eb;
+}
+
+
+/* ACCUEIL */
+.carousel {
+    width: 80%;
+    margin: 0 auto;
+    margin-top : 50px;
+    padding: 20px;
+}
+
+.carousel-item {
+    text-align: center;
+    padding: 10px;
+    margin-right : 40px;
+}
+
+.book-cover {
+    width: 150px;
+    height: 200px;
+    background-color: #4CAF50; /* Default background color */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 5px;
+    margin: 0 auto;
+}
+
+.book-title {
+    margin-top: 10px;
+    font-size: 16px;
+}
+#content {
+    margin-top : 100px;
+}
+
+
+/*BOOK PAGE*/
+.book-page {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.book-page h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+.book-page p {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+.book-actions button {
+    padding: 10px 15px;
+    margin: 5px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.book-actions button a {
+    text-decoration: none;
+    color: white;
+}
+.book-actions button:hover {
+    background-color: #0056b3;
+}
+
+.container-ajouts{
+    margin-top: 50px;
+    background-color: #83a275;
+    border-bottom: solid 2px #578343;
+    border-top: solid 2px #578343;
+    margin-bottom: -50px;
+    padding-left: 30px;
+    height : 70px;
+    opacity: 0.8;
+    display: flex;
+    align-items: center;
+}
+
+.container-ajouts h2 {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    color : white;
+    margin : 0;
+
+}
+
+

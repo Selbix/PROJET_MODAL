@@ -1,0 +1,12 @@
+# Ignore system files
+.DS_Store
+.idea/
+.vscode/
+
+# Ignore environment files
+.env
+
+# Ignore dependencies
+node_modules/
+vendor/
+storage/

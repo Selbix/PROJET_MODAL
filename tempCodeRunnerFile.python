@@ -1,0 +1,84 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
+
+def compute_zn(n):
+    """Calcule les points zn avec z0 = 16 et zn+1 = ((1+i)/2)zn"""
+    if n == 0:
+        return [16 + 0j]  # z0 = 16
+    
+    prev_z = compute_zn(n-1)[-1]
+    multiplier = (1 + 1j) / 2  # Le nombre complexe (1+i)/2
+    zn = multiplier * prev_z
+    
+    return compute_zn(n-1) + [zn]
+
+def create_animation():
+    # Configuration de la figure
+    fig, ax = plt.subplots(figsize=(12, 12))
+    ax.set_xlabel('Re(z)')
+    ax.set_ylabel('Im(z)')
+    ax.set_title('Construction des points zn et lignes Ln')
+    
+    # Points et lignes à animer
+    points, = ax.plot([], [], 'bo', label='Points zn')
+    line, = ax.plot([], [], 'r-', label='Ligne Ln')
+    
+    # Ajout des axes
+    ax.axhline(y=0, color='k', linestyle='-', alpha=0.3)
+    ax.axvline(x=0, color='k', linestyle='-', alpha=0.3)
+    ax.grid(True, alpha=0.3)
+    ax.set_aspect('equal')
+    ax.legend()
+    
+    # Pré-calcul de tous les points
+    all_zn = compute_zn(20)  # On calcule jusqu'à z20
+    
+    # Calcul des limites du graphique basé sur les points
+    max_coord = max([max(abs(z.real), abs(z.imag)) for z in all_zn])
+    margin = max_coord * 0.1
+    ax.set_xlim(-max_coord - margin, max_coord + margin)
+    ax.set_ylim(-max_coord - margin, max_coord + margin)
+    
+    def init():
+        points.set_data([], [])
+        line.set_data([], [])
+        return points, line
+
+    def animate(frame):
+        ax.cla()  # Clear les annotations précédentes
+        ax.grid(True, alpha=0.3)
+        ax.set_aspect('equal')
+        ax.set_xlim(-max_coord - margin, max_coord + margin)
+        ax.set_ylim(-max_coord - margin, max_coord + margin)
+        ax.set_xlabel('Re(z)')
+        ax.set_ylabel('Im(z)')
+        
+        n = frame  # Commencer avec n=0
+        current_points = all_zn[:n+1]
+        
+        # Conversion des nombres complexes en coordonnées x,y
+        x_coords = [z.real for z in current_points]
+        y_coords = [z.imag for z in current_points]
+        
+        # Annotations des points
+        for i, (x, y) in enumerate(zip(x_coords, y_coords)):
+            ax.annotate(f'z{i}\n({x:.2f}, {y:.2f}i)', (x, y), 
+                       xytext=(10, 10), textcoords='offset points',
+                       fontsize=8)
+        
+        ax.plot(x_coords, y_coords, 'bo-', label='Points et ligne Ln')
+        ax.set_title(f'Construction jusqu\'à z{n}')
+        ax.legend()
+        
+        return []
+
+    # Création de l'animation
+    anim = FuncAnimation(fig, animate, init_func=init, frames=21,
+                        interval=1000, repeat=True)
+    
+    plt.show()
+    return anim
+
+if __name__ == "__main__":
+    animation = create_animation()
