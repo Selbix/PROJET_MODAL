@@ -1,4 +1,64 @@
 <?php
+if (!isset($_SESSION['user_id'])) {
+    echo '
+    <style>
+        /* Ensure the body background is blurred */
+        body {
+            background-color: #263248;
+            background-size: cover;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Create an overlay that blurs the entire page */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+
+        /* Blurred background without affecting text */
+        .blurred-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(10px);
+            z-index: -1; /* Ensure it stays behind the message */
+        }
+
+        /* Message box (kept clear) */
+        .message {
+            background: rgba(0, 0, 0, 0.85); /* Dark box for contrast */
+            color: white;
+            padding: 20px 40px;
+            border-radius: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.5);
+            z-index: 1000; /* Keep it above everything */
+        }
+    </style>
+    <div class="overlay">
+        <div class="blurred-background"></div> <!-- Background blur -->
+        <a href="index.php?page=connexion"><div class="message">Il faut être connecté pour pouvoir accéder aux livres. <br>
+        Cliquez pour rejoindre la page de connexion.</div></a> <!-- Clear Message -->
+    </div>';
+    exit();
+}
+
 
 if (isset($_GET['id'])) {
     $askedLivre = $_GET["id"];
