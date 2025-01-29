@@ -11,7 +11,11 @@ if (isset($_GET['id'])) {
 
 
     $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+    echo "<script>
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.pathname);
+        }
+    </script>";
     // Debugging output (Optional)
     if (!$books) {
         echo "No book found.";
@@ -43,7 +47,7 @@ var_dump($books);
             </div>
             <div class="action-buttons2">
                 <a href="download.php?id=<?php echo $books[0]['id']; ?>" class="btn2 btn-download2">Download</a>
-                <a href="read.php?id=<?php echo $books[0]['id']; ?>" class="btn2 btn-read2">Read</a>
+                <a target = "_blank" href="books/<?php echo $books[0]['id']; ?>.pdf" class="btn2 btn-read2">Read</a>
                 <button class="btn2 btn-like2">👍</button>
             </div>
             <div class="rating2">
