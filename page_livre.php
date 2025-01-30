@@ -50,6 +50,7 @@ if (!isset($_SESSION['loggedIn'])) {
             box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.5);
             z-index: 1000; /* Keep it above everything */
         }
+            
     </style>
     <div class="overlay">
         <div class="blurred-background"></div> <!-- Background blur -->
@@ -71,11 +72,11 @@ if (isset($_GET['id'])) {
 
 
     $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    echo "<script>
+    /*echo "<script>
         if (window.history.replaceState) {
             window.history.replaceState(null, null, window.location.pathname);
         }
-    </script>";
+    </script>";*/
     // Debugging output (Optional)
     if (!$books) {
         echo "No book found.";
@@ -88,7 +89,23 @@ if (isset($_GET['id'])) {
 echo generateHTMLHeader($books[0]["titre"], "styles.css");
 //var_dump($books);
 //echo "<h1>". $book['titre']. "</h1>";
-var_dump($books);
+//var_dump($books);
+?>
+
+<?php
+$dbh = Database::connect();
+
+// Fetch the latest reviews with user names
+$query = "SELECT u.nom_utilisateur AS user_name, r.note, r.avis 
+          FROM rating_livre r
+          JOIN Utilisateurs u ON r.id_utilisateur = u.id
+          WHERE r.avis IS NOT NULL AND r.avis != ''
+          ORDER BY r.id DESC
+          LIMIT 10";  // Adjust the limit as needed
+
+$stmt = $dbh->prepare($query);
+$stmt->execute();
+$reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <div class="book-container2">
@@ -110,12 +127,94 @@ var_dump($books);
                 <a target = "_blank" href="books/<?php echo $books[0]['id']; ?>.pdf" class="btn2 btn-read2">Read</a>
                 <button class="btn2 btn-like2" onclick="likeBook(<?php echo $books[0]['id']; ?>, <?php echo $_SESSION['user']['id']; ?>)">👍</button>
                 </div>
-            <div class="rating2">
-                <div class="stars2">★★★★★</div>
-                <div>Nombre de votants</div>
+                <div class="rating2">
+                <div class="rating2">
+    <div class="star-rating">
+        <?php
+        // Get the average rating for this book (you'll need to implement this)
+        $averageRating = 0; // Replace with actual average rating
+        
+        for ($i = 1; $i <= 5; $i++) {
+            echo "<span class='star' data-rating='$i'>★</span>";
+        }
+        ?>
+    </div>
+    <div>Nombre de votants</div>
+</div>
+<footer class="review-footer">
+    <div class="review-carousel-container">
+        <h2>User Reviews</h2>
+        <div class="review-wrapper">
+            <button class="review-carousel-btn left" onclick="scrollReviewCarousel(-1)">❮</button>
+            <div class="review-carousel">
+                <?php foreach ($reviews as $review): ?>
+                    <div class="review-card">
+                        <div class="review-header">
+                            <strong><?= htmlspecialchars($review['user_name']); ?></strong>
+                            <div class="review-rating">
+                                <?php
+                                $rating = intval($review['note']);
+                                for ($i = 1; $i <= 5; $i++) {
+                                    if ($i <= $rating) {
+                                        echo '<span class="review-star review-filled">★</span>';
+                                    } else {
+                                        echo '<span class="review-star review-empty">★</span>';
+                                    }
+                                }
+                                ?>
+                            </div>
+                        </div>
+                        <div class="review-content">
+                            <?= htmlspecialchars($review['avis']); ?>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
             </div>
+            <button class="review-carousel-btn right" onclick="scrollReviewCarousel(1)">❯</button>
         </div>
     </div>
+</footer>
+
+<style>
+.review-carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.left { left: 10px; }
+.right { right: 10px; }
+</style>
+
+<script>
+function scrollReviewCarousel(direction) {
+    let carousel = document.querySelector(".review-carousel");
+    carousel.scrollBy({ left: direction * 400, behavior: 'smooth' });
+}
+</script>
+
+
+
+
+
+        </div>
+    </div>
+
+    <div id="reviewModal" class="review-modal">
+    <div class="review-modal-content">
+        <span class="review-close">&times;</span>
+        <h2>Write a Review (Optional)</h2>
+        <textarea id="reviewText" class="review-textarea" placeholder="Write your review here..."></textarea>
+        <button id="submitReview" class="review-submit-btn">Submit</button>
+    </div>
+</div>
 </body>
 <script>
 function likeBook(bookId, userId) {
@@ -141,4 +240,65 @@ function likeBook(bookId, userId) {
     .catch(error => console.error("Error:", error));
 }
 </script>
+
+
+
 <script>
+function submitReview(bookId, userId, rating) {
+    let reviewText = document.getElementById("reviewText").value.trim(); // Get review text
+
+    let formData = new FormData();
+    formData.append("book_id", bookId);
+    formData.append("user_id", userId);
+    formData.append("rating", rating);
+    formData.append("review", reviewText);
+
+    fetch("submit_review.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data); // Debugging
+        if (data.status === "success") {
+            alert("Review submitted successfully! ⭐");
+        } else {
+            alert("Error: " + data.message);
+        }
+    })
+    .catch(error => console.error("Error submitting review:", error));
+}
+document.addEventListener("DOMContentLoaded", function () {
+    const stars = document.querySelectorAll(".star-rating .star");
+    let selectedRating = 0;
+    const modal = document.getElementById("reviewModal");
+    const closeModal = document.querySelector(".review-close");
+    const submitButton = document.getElementById("submitReview");
+    const reviewText = document.getElementById("reviewText");
+
+    // ⭐ Handle Star Click Event (Open Modal)
+    stars.forEach((star) => {
+        star.addEventListener("click", function () {
+            selectedRating = this.getAttribute("data-rating");
+            modal.style.display = "flex"; // Show modal
+        });
+    });
+
+    // ❌ Close Modal When Clicking 'X'
+    closeModal.addEventListener("click", function () {
+        modal.style.display = "none";
+    });
+
+    // 📩 Submit Rating & Review
+    submitButton.addEventListener("click", function () {
+        if (!loggedInUser || !loggedInUser.id) {
+            alert("You must be logged in to submit a review.");
+            return;
+        }
+        submitReview(<?= $books[0]['id']; ?>, loggedInUser.id, selectedRating);
+        modal.style.display = "none";
+        reviewText.value = ""; // Clear the input
+    });
+});
+
+</script>
