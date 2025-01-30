@@ -1,3 +1,4 @@
+
 /* Navigation Styles */
 body {
     background-color: #263248;
@@ -449,6 +450,7 @@ header {
 /* Make sure footer sticks to the bottom */
 footer {
     width: 100%;
+    max-width: 800px;
     background-color: #1a1a2e; /* Dark footer background */
     padding: 40px 0;
     position: relative;
@@ -552,3 +554,27 @@ footer {
 /* Ensure buttons are inside the review wrapper */
 .review-wrapper .review-carousel-btn.left { left: -50px; }
 .review-wrapper .review-carousel-btn.right { right: -50px; }
+
+/* Style for the no reviews message */
+.no-reviews-card {
+    width: 100%;
+    max-width: 400px;
+    background: #2d3748;
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 4px 4px 12px rgba(255, 255, 255, 0.1);
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: bold;
+    opacity: 0.8;
+    margin: 0 auto; /* Ensures it's centered */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Hide carousel buttons when no reviews exist */
+.no-reviews .review-carousel-btn {
+    display: none !important;
+}
