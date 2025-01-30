@@ -142,24 +142,3 @@ function likeBook(bookId, userId) {
 }
 </script>
 <script>
-function sendEmail(bookId, bookTitle, userEmail) {
-    let formData = new FormData();
-    formData.append("book_id", bookId);
-    formData.append("book_title", bookTitle);
-    formData.append("user_email", userEmail);
-
-    fetch("send_email.php", {
-        method: "POST",
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === "success") {
-            alert("📩 Email sent successfully to " + userEmail);
-        } else {
-            alert("❌ Error sending email: " + data.message);
-        }
-    })
-    .catch(error => console.error("Error:", error));
-}
-</script>
