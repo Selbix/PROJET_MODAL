@@ -1,4 +1,3 @@
-
 <?php
 echo <<<FIN
  <div class="container">
