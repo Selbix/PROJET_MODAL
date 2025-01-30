@@ -245,32 +245,38 @@ header {
 
 
 /* PAGE LIVRE */
+/* Book Section Layout */
 .book-container2 {
-    max-width: 1200px;
+    max-width: 1300px; /* Increase width to allow space for a bigger image */
     margin: 0 auto;
     display: flex;
-    gap: 40px;
-    padding: 20px;
+    gap: 50px; /* Add more space between the book image and text */
+    padding: 40px;
+    align-items: center; /* Center vertically */
 }
 
+/* Book Image Section */
 .book-image2 {
-    flex: 0 0 300px;
+    flex: 0 0 400px; /* Increase size */
+    max-width: 400px; /* Prevent it from being too large */
 }
 
 .book-image2 img {
     width: 100%;
     height: auto;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.4); /* Subtle shadow effect */
 }
 
+/* Book Details */
 .book-details2 {
-    flex: 1;
+    flex: 1; /* Take up remaining space */
+    text-align: left; /* Align text to the left */
 }
 
 .book-title2 {
-    font-size: 2.5em;
-    margin-bottom: 10px;
+    font-size: 3rem; /* Bigger title */
+    margin-bottom: 15px;
     color: white;
 }
 
@@ -328,3 +334,221 @@ header {
     font-size: 24px;
     letter-spacing: 5px;
 }
+
+.star-rating {
+    font-size: 36px;  /* Increased from 24px */
+    display: inline-block;
+    gap : 10px;
+}
+
+
+.star {
+    cursor: pointer;
+    color: #ddd;
+    display: inline-block;
+    padding: 0 8px;  /* Increased from 2px */
+    transition: color 0.2s;
+}
+.rating2 .star-rating{
+    display: flex !important;
+    flex-direction: row-reverse !important; /* Reverse the order of stars */
+    justify-content: left !important;
+
+}
+.rating2 .star-rating .star {
+    font-size: 20px !important;
+    color: #ddd !important;
+    display: inline-block !important;
+    transition: color 0.3s ease-in-out !important;
+}
+
+.rating2 .star-rating .star:hover,
+.star.active {
+    color: #ffc73a;
+}
+
+/* Modified hover effect for left-to-right */
+.rating2 .star-rating .star:hover ~ .star {
+    color: #ddd;  /* Reset color for stars after hovered one */
+}
+
+.rating2 .star-rating .star-rating:hover .star {
+    color: #ffc73a;  /* Default all stars to yellow on container hover */
+}
+
+.rating2 .star-rating .star-rating .star:hover ~ .star {
+    color: #ddd;  /* Then reset the ones after the current */
+}
+
+.rating2 .star-rating .star:hover,
+.rating2 .star-rating .star:hover ~ .star {
+    color: #ffc73a !important; /* Highlight color */
+}
+
+/* Keep selected stars filled */
+.rating2 .star-rating .star.active,
+.rating2 .star-rating .star.active ~ .star {
+    color: #ffc73a !important;
+}
+
+.review-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.review-modal-content {
+    background-color: #263248;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    color: white;
+    text-align: center;
+}
+
+.review-close {
+    color: white;
+    float: right;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.review-textarea {
+    width: 100%;
+    height: 100px;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    background: #1a1a2e;
+    color: white;
+    border: 1px solid #444;
+}
+
+.review-submit-btn {
+    margin-top: 10px;
+    padding: 10px 15px;
+    background-color: #3b82f6;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.review-submit-btn:hover {
+    background-color: #2563eb;
+}
+
+/*REVIEW CARDS */
+/* Make sure footer sticks to the bottom */
+footer {
+    width: 100%;
+    background-color: #1a1a2e; /* Dark footer background */
+    padding: 40px 0;
+    position: relative;
+    margin-top: 40px; /* Push down to be at the very bottom */
+    border-radius: 25px;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.review-carousel-container {
+    text-align: center;
+    width: 90%; /* Make it take most of the page width */
+    max-width: 1200px; /* Limit max width */
+    margin: auto; /* Center it */
+}
+
+/* Wrap the review section properly */
+.review-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+/* Expand the review carousel to fit well in the footer */
+.review-carousel {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+    scroll-snap-type: x mandatory;
+    max-width: 80%; /* Takes a large part of the page */
+    white-space: nowrap;
+    padding: 10px;
+}
+
+/* Styling for individual review cards */
+.review-card {
+    flex: 0 0 auto;
+    width: 300px; /* Increased size for better readability */
+    background: #2d3748;
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(255, 255, 255, 0.1);
+    scroll-snap-align: start;
+    text-align: left;
+}
+
+/* Styling for review header (name & stars) */
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+/* Ensure stars are properly styled */
+.review-rating {
+    display: flex;
+    gap: 3px;
+}
+
+/* Scoped styles for review stars */
+.review-star {
+    font-size: 18px;
+}
+
+.review-filled {
+    color: #ffc73a !important; /* Yellow for filled stars */
+}
+
+.review-empty {
+    color: #4a5568 !important; /* Grey for empty stars */
+}
+
+/* Review content */
+.review-content {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+}
+
+/* Fix scroll buttons inside the section */
+.review-carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 10;
+}
+
+/* Ensure buttons are inside the review wrapper */
+.review-wrapper .review-carousel-btn.left { left: -50px; }
+.review-wrapper .review-carousel-btn.right { right: -50px; }
