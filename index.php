@@ -50,6 +50,7 @@ if($askedPage == "connexion"){
 }
 else if(isset($_GET['id'])){
     $askedPage = "page_livre";
+    $pageTitle = "Livre";
     $lien = "styles.css";
     $authorized = checkPage($askedPage);
 }
@@ -73,6 +74,10 @@ echo "<br>";*/
 // code de sélection des pages, comme précédemment
 
 ?>
+<script>
+var loggedInUser = <?= json_encode($_SESSION['user'] ?? null) ?>;
+console.log("Logged in user:", loggedInUser);
+</script>
 
 
 <div class="container-fluid ontop">
@@ -81,7 +86,7 @@ echo "<br>";*/
 
     <div id="content" class="content">
     <?php require "{$askedPage}.php";
-    var_dump($_SESSION);
+    //var_dump($_SESSION);
     ?>
     </div>
 
