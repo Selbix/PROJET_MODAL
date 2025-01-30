@@ -1,3 +1,4 @@
+
 <?php
 echo <<<FIN
  <div class="container">
@@ -18,7 +19,7 @@ echo <<<FIN
             <label for="description">Description</label>
             <textarea id="description" name="description" rows="4" required></textarea>
 
-            <label for="file">Add File</label>
+            <label for="file">Ajouter le document</label>
             <input type="file" id="file" name="file" required>
 
             <button type="submit">Ajouter</button>
@@ -33,7 +34,7 @@ var_dump(is_uploaded_file($_FILES['file']['tmp_name']));
 
     if (!empty($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']
 ['tmp_name'])) {
-    echo "ICI";
+    //echo "ICI";
     Livres::insererLivre( $dbh, $_POST["titre"],  $_POST["auteur"], $_POST["genre"], $_POST["date_sortie"], $_POST["description"],  $_FILES["file"]["type"],  $_FILES["file"]["tmp_name"]);
     $form_values_valid = true;
   }

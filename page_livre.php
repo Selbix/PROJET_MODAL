@@ -1,3 +1,4 @@
+
 <?php
 if (!isset($_SESSION['loggedIn'])) {
     echo '
@@ -99,12 +100,14 @@ $dbh = Database::connect();
 $query = "SELECT u.nom_utilisateur AS user_name, r.note, r.avis 
           FROM rating_livre r
           JOIN Utilisateurs u ON r.id_utilisateur = u.id
-          WHERE r.avis IS NOT NULL AND r.avis != ''
+          WHERE r.id_titre = ?  -- Filter by book ID
+          AND r.avis IS NOT NULL 
+          AND r.avis != ''
           ORDER BY r.id DESC
           LIMIT 10";  // Adjust the limit as needed
 
 $stmt = $dbh->prepare($query);
-$stmt->execute();
+$stmt->execute([$books[0]['id']]);
 $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
@@ -123,8 +126,8 @@ $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <?php echo htmlspecialchars($books[0]['description']); ?>
             </div>
             <div class="action-buttons2">
-                <a href="download.php?id=<?php echo $books[0]['id']; ?>" class="btn2 btn-download2">Download</a>
-                <a target = "_blank" href="books/<?php echo $books[0]['id']; ?>.pdf" class="btn2 btn-read2">Read</a>
+                <a href="download.php?id=<?php echo $books[0]['id']; ?>" class="btn2 btn-download2">Télécharger</a>
+                <a target = "_blank" href="books/<?php echo $books[0]['id']; ?>.pdf" class="btn2 btn-read2">Lire</a>
                 <button class="btn2 btn-like2" onclick="likeBook(<?php echo $books[0]['id']; ?>, <?php echo $_SESSION['user']['id']; ?>)">👍</button>
                 </div>
                 <div class="rating2">
@@ -142,11 +145,18 @@ $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div>Nombre de votants</div>
 </div>
 <footer class="review-footer">
-    <div class="review-carousel-container">
-        <h2>User Reviews</h2>
-        <div class="review-wrapper">
-            <button class="review-carousel-btn left" onclick="scrollReviewCarousel(-1)">❮</button>
-            <div class="review-carousel">
+<div class="review-carousel-container">
+    <h2>Avis des lecteurs</h2>
+    <div class="review-wrapper">
+        <button class="review-carousel-btn left" onclick="scrollReviewCarousel(-1)">❮</button>
+        <div class="review-carousel">
+            <?php if (empty($reviews)): ?>
+                <!-- Show message when no reviews exist -->
+                <div class="no-reviews-card">
+                    Aucun avis pour l'instant... Soyez le premier !
+                </div>
+            <?php else: ?>
+                <!-- Display reviews -->
                 <?php foreach ($reviews as $review): ?>
                     <div class="review-card">
                         <div class="review-header">
@@ -169,10 +179,11 @@ $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </div>
                     </div>
                 <?php endforeach; ?>
-            </div>
-            <button class="review-carousel-btn right" onclick="scrollReviewCarousel(1)">❯</button>
+            <?php endif; ?>
         </div>
+        <button class="review-carousel-btn right" onclick="scrollReviewCarousel(1)">❯</button>
     </div>
+</div>
 </footer>
 
 <style>
@@ -210,9 +221,9 @@ function scrollReviewCarousel(direction) {
     <div id="reviewModal" class="review-modal">
     <div class="review-modal-content">
         <span class="review-close">&times;</span>
-        <h2>Write a Review (Optional)</h2>
-        <textarea id="reviewText" class="review-textarea" placeholder="Write your review here..."></textarea>
-        <button id="submitReview" class="review-submit-btn">Submit</button>
+        <h2>Ecrire un avis (Optionel)</h2>
+        <textarea id="reviewText" class="review-textarea" placeholder="Écrivez votre avis ici..."></textarea>
+        <button id="submitReview" class="review-submit-btn">Publier</button>
     </div>
 </div>
 </body>
@@ -230,9 +241,9 @@ function likeBook(bookId, userId) {
     .then(data => {
         console.log(data); // Debugging
         if (data.status === "success") {
-            alert("Book liked successfully! ✅");
+            alert("Livre ajouté à vos livres likés! ✅");
         } else if (data.message === "Already liked") {
-            alert("You have already liked this book. ❤️");
+            alert("Vous avez déjà liké ce livre. ❤️");
         } else {
             alert("Error: " + data.message);
         }
@@ -261,7 +272,7 @@ function submitReview(bookId, userId, rating) {
     .then(data => {
         console.log(data); // Debugging
         if (data.status === "success") {
-            alert("Review submitted successfully! ⭐");
+            alert("Avis publié! ⭐");
         } else {
             alert("Error: " + data.message);
         }
@@ -292,7 +303,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // 📩 Submit Rating & Review
     submitButton.addEventListener("click", function () {
         if (!loggedInUser || !loggedInUser.id) {
-            alert("You must be logged in to submit a review.");
+            alert("Vous devez être connecté pour laisser un avis.");
             return;
         }
         submitReview(<?= $books[0]['id']; ?>, loggedInUser.id, selectedRating);
