@@ -35,7 +35,7 @@ for ($i = 0; $i < $numBooks; $i++) {
    echo '<div class="book-cover" style="background: url(' . htmlspecialchars($thumbnailPath) . ') center/cover no-repeat;">';
    echo '</div>';
    echo '</a>';
-   echo '<div class="book-title">' . htmlspecialchars($books[$i]['titre']) . '</div>';
+   echo '<div class="book-title"> <p class="titre-livre">' . htmlspecialchars($books[$i]['titre']) . '</p></div>';
    echo '</div>';
 }
 echo '</div>';

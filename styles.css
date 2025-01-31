@@ -181,6 +181,8 @@ header {
 .book-title {
     margin-top: 10px;
     font-size: 16px;
+    color : whitesmoke;
+
 }
 #content {
     margin-top : 100px;
@@ -577,3 +579,6 @@ footer {
 .no-reviews .review-carousel-btn {
     display: none !important;
 }
+ .titre-livre{
+    color : white;
+ }
