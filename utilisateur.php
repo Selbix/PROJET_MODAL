@@ -6,6 +6,7 @@ class Utilisateur {
     public $email;
     public $password;
     public $quote;
+    public $image;
 
     // Constructeur de la classe avec valeurs par défaut
     /*public function __construct($nom_utilisateur = null, $nom_complet = null, $email = null, $password = null, $quote = null) {
@@ -23,8 +24,10 @@ class Utilisateur {
             $this->email = $data['email'] ?? null;
             $this->password = $data['password'] ?? null;
             $this->quote = $data['quote'] ?? null;
+            $this->image = $data['image'] ?? null;
         }
     }
+
     // Méthode pour récupérer un utilisateur par ID
     public static function getUtilisateur($dsn, $id) {
         $query = "SELECT * FROM Utilisateurs WHERE id = ?";
@@ -44,49 +47,49 @@ class Utilisateur {
         $sth->execute(array($email));
         $user = $sth->fetch();
         $sth->closeCursor();
-        //echo $user;
         return $user ? $user : null; // Retourne null si aucun utilisateur n'est trouvé
     }
 
     // Méthode pour ajouter ou insérer un utilisateur à la base de données
-public function save($dsn) {
-    try {
-        // Check if the user already exists
-        $existingUser = Utilisateur::getUtilisateurParEmail($dsn, $this->email);
-        if ($existingUser !== null) {
-            error_log("Utilisateur déjà existant: " . $this->email);
+    public function save($dsn) {
+        try {
+            // Vérifier si l'utilisateur existe déjà
+            $existingUser = Utilisateur::getUtilisateurParEmail($dsn, $this->email);
+            if ($existingUser !== null) {
+                error_log("Utilisateur déjà existant: " . $this->email);
+                return false;
+            }
+
+            // Préparer la requête SQL
+            $sth = $dsn->prepare(
+                'INSERT INTO Utilisateurs (nom_utilisateur, nom_complet, email, password, quote, image) 
+                 VALUES (?, ?, ?, ?, ?, ?)'
+            );
+
+            // Hasher le mot de passe
+            $mdp_hashed = password_hash($this->password, PASSWORD_DEFAULT);
+
+            // Forcer NULL pour les quotes et images vides
+            $quoteValue = empty($this->quote) ? null : $this->quote;
+            $imageValue = empty($this->image) ? null : $this->image;
+
+            // Logger les valeurs pour le débogage
+            error_log("Saving user: nom_utilisateur={$this->nom_utilisateur}, nom_complet={$this->nom_complet}, email={$this->email}, quote=" . ($quoteValue ?? 'NULL') . ", image=" . ($imageValue ?? 'NULL'));
+
+            // Exécuter la requête
+            return $sth->execute([
+                $this->nom_utilisateur,
+                $this->nom_complet,
+                $this->email,
+                $mdp_hashed,
+                $quoteValue,
+                $imageValue
+            ]);
+        } catch (PDOException $e) {
+            error_log("Erreur lors de l'enregistrement: " . $e->getMessage());
             return false;
         }
-
-        // Prepare the SQL query
-        $sth = $dsn->prepare(
-            'INSERT INTO Utilisateurs (nom_utilisateur, nom_complet, email, password, quote) 
-             VALUES (?, ?, ?, ?, ?)'
-        );
-
-        // Hash the password
-        $mdp_hashed = password_hash($this->password, PASSWORD_DEFAULT);
-
-        // Force NULL for empty quote
-        $quoteValue = empty($this->quote) ? null : $this->quote;
-
-        // Log values for debugging
-        error_log("Saving user: nom_utilisateur={$this->nom_utilisateur}, nom_complet={$this->nom_complet}, email={$this->email}, quote=" . ($quoteValue ?? 'NULL'));
-
-        // Execute the query
-        return $sth->execute([
-            $this->nom_utilisateur,
-            $this->nom_complet,
-            $this->email,
-            $mdp_hashed,
-            $quoteValue
-        ]);
-    } catch (PDOException $e) {
-        error_log("Erreur lors de l'enregistrement: " . $e->getMessage());
-        return false;
     }
-}
-
 
     // Méthode pour vérifier le mot de passe
     public static function testerMDP($dsn, $email, $password) {
