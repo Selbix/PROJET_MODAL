@@ -118,6 +118,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $sth->execute(array($citation, $user['id']));
     $_SESSION['user']['quote'] = $citation;
 }
+if ($_SERVER["REQUEST_METHOD"] == "POST" & ISSET($_POST['username'])){
+    $username = trim($_POST['username']);
+    $sth = $dbh->prepare("UPDATE Utilisateurs SET nom_utilisateur = ? WHERE id = ?");
+    $sth->execute(array($username, $user['id']));
+    $_SESSION['user']['username'] = $username;
+}
 $user = $_SESSION['user'];
 $user['image'] = 'uploads/' . $user['id'] . '.jpg';
 if(!file_exists($user['image'])){
@@ -219,7 +225,9 @@ function showToast(message, type = "info") {
     </div>
         <div class="profile-details">
             <h2><?php echo htmlspecialchars($user['nom-complet'] ?? ''); ?></h2>
-            <p>Nom d'utilisateur : <?php echo htmlspecialchars($user['username'] ?? ''); ?></p>
+            <p>Modifier nom d'utilisateur :  <input type="text" id="username" name="username" placeholder=<?php echo htmlspecialchars($user['username'] ?? ''); ?>>
+            </p>
+
             <p>Email : <?php echo htmlspecialchars($user['email'] ?? ''); ?></p>
         </div>
     </div>
