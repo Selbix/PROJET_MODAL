@@ -83,7 +83,7 @@ console.log("Logged in user:", loggedInUser);
 <div class="container-fluid ontop">
     <?php echo generateMenu(); ?>
 </div>
-
+    
     <div id="content" class="content">
     <?php require "{$askedPage}.php";
     //var_dump($_SESSION);

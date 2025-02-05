@@ -3,7 +3,8 @@ $page_list = [
     'accueil' => 'Accueil',
     'connexion' => 'Connexion',
     'profil' => 'Mon profil',
-    'ajouter' => 'Ajouter'
+    'ajouter' => 'Ajouter',
+    'modif-profile' => 'Modifier mon profil',
 ];
 
 function generateHTMLFooter()

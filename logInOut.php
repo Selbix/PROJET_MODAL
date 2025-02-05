@@ -21,7 +21,9 @@ function logIn($dbh) {
             $_SESSION['user'] = [
                 'id' => $utilisateur->id,                // Use -> to access properties
                 'username' => $utilisateur->nom_utilisateur, // Map correctly
-                'email' => $utilisateur->email
+                'email' => $utilisateur->email,
+                'nom-complet' => $utilisateur->nom_complet,
+                'quote' => $utilisateur->quote,
             ];
             
             //header("Location: index.php?page=connexion&error=login_success");
