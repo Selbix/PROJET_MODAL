@@ -87,7 +87,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (!is_dir($target_dir)) {
                 mkdir($target_dir, 0777, true);
             }
-
             // Générer un nom de fichier unique
             $fileExtension = pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION);
             $fileName = $_SESSION['user']['id'] . "." . $fileExtension;
@@ -105,6 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
+var_dump($user['image']);
 /*if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_FILES['image'])) {
         echo "<pre>";
@@ -119,6 +119,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $_SESSION['user']['quote'] = $citation;
 }
 $user = $_SESSION['user'];
+$user['image'] = 'uploads/' . $user['id'] . '.jpg';
+if(!file_exists($user['image'])){
+    $user['image'] = 'uploads/default_profile.jpg';
+}
 ?>
 
 
@@ -126,7 +130,7 @@ $user = $_SESSION['user'];
 <div class="profile-header">
     <div class="profile-picture-container">
         <div class="profile-picture">
-            <img src="<?php echo htmlspecialchars($user['image'] ?? 'uploads/default_profile.jpg'); ?>?v=<?php echo time(); ?>" alt="Photo de profil">
+            <img src="<?php echo htmlspecialchars($user['image']); ?>?v=<?php echo time(); ?>" alt="Photo de profil">
         </div>
         <form method="post" action="index.php?page=modif-profile" enctype="multipart/form-data" class="profile-picture-upload">
     <label class="custum-file-upload" for="file">
@@ -155,7 +159,7 @@ $user = $_SESSION['user'];
 function validateAndShowStatus(input) {
     const file = input.files[0];
     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-    const maxSize = 5 * 1024 * 1024; // 5MB
+    const maxSize = 20 * 1024 * 1024; // 5MB
 
     if (!file) {
         showToast("Aucun fichier choisi", "error");
