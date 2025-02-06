@@ -96,9 +96,9 @@ echo generateHTMLHeader($books[0]["titre"], "styles.css");
 
 <?php
 $dbh = Database::connect();
-var_dump($user);
+//var_dump($user);
 // Fetch the latest reviews with user names
-$query = "SELECT u.nom_utilisateur AS user_name, r.note, r.avis 
+$query = "SELECT u.id AS user_id, u.nom_utilisateur AS user_name, r.note, r.avis 
           FROM rating_livre r
           JOIN Utilisateurs u ON r.id_utilisateur = u.id
           WHERE r.id_titre = ?  -- Filter by book ID
@@ -110,6 +110,7 @@ $query = "SELECT u.nom_utilisateur AS user_name, r.note, r.avis
 $stmt = $dbh->prepare($query);
 $stmt->execute([$books[0]['id']]);
 $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
+var_dump($reviews);
 ?>
 
 <div class="book-container2">
@@ -161,7 +162,7 @@ $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <?php foreach ($reviews as $review): ?>
                     <div class="review-card">
                         <div class="review-header">
-                            <img class="image-review" alt="user-pfp" src=<?php echo "uploads/".$user['id'].".jpg"; ?>>
+                            <img class="image-review" alt="user-pfp" src=<?php echo "uploads/".$review['user_id'].".jpg"; ?>>
                             <strong><?= htmlspecialchars($review['user_name']); ?></strong>
                             <div class="review-rating">
                                 <?php
