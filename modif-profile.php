@@ -1,3 +1,58 @@
+<script>
+    // Function to create and show notifications
+    function showNotification(message, type = 'error') {
+        // Create container if it doesn't exist
+        let container = document.querySelector('.notification-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.className = 'notification-container';
+            document.body.appendChild(container);
+        }
+        
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        
+        notification.textContent = message;
+        
+        // Add to container
+        container.appendChild(notification);
+        
+        // Remove notification after animation completes
+        setTimeout(() => {
+            notification.remove();
+        }, 5000);
+    }
+
+    // Function to check URL parameters and show notification
+    function checkForErrors() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const error = urlParams.get('error');
+        
+        const errorMessages = {
+            'empty_fields': 'Veuillez remplir tous les champs.',
+            'login_failed': 'Email ou mot de passe incorrect.',
+            'system_error': 'Une erreur système est survenue. Veuillez réessayer.',
+            'login_success': 'Connexion réussie !',
+            'registration_completed': 'Inscription réussie !',
+            'old_password_incorrect': 'Ancien mot de passe incorrect.',
+            'new_password_different': 'Le nouveau mot de passe et la confirmation ne correspondent pas.',
+            'same_password': 'L\'ancien mot de passe et le nouveau sont identiques.',
+            'change_success' : 'Mot de passe changé avec succès.'
+        };
+        
+        if (error && errorMessages[error]) {
+            const isSuccess = error.includes('success');
+            showNotification(errorMessages[error], isSuccess ? 'success' : 'error');
+            
+            // Clean up URL without reloading page
+            // const newUrl = window.location.pathname;
+            // window.history.pushState({}, '', newUrl);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', checkForErrors);
+</script>
 <?php
 if (!isset($_SESSION['loggedIn'])) {
     echo '
@@ -104,7 +159,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
-var_dump($user['image']);
+//var_dump($user['image']);
 /*if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_FILES['image'])) {
         echo "<pre>";
@@ -220,6 +275,32 @@ function showToast(message, type = "info") {
     }, 5000);
 }
 
+function showNotification(message, type = 'error') {
+    // Create container if it doesn't exist
+    let container = document.querySelector('.notification-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.className = 'notification-container';
+        document.body.appendChild(container);
+    }
+    
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = 'notification \${type}';
+    
+    notification.textContent = message;
+    
+    // Add to container
+    container.appendChild(notification);
+    
+    // Remove notification after animation completes
+    setTimeout(() => {
+        notification.remove();
+    }, 5000);
+}
+
+
+
 
 </script>
     </div>
@@ -237,8 +318,8 @@ function showToast(message, type = "info") {
         </div>
         <button type="submit" class="btn">Mettre à jour</button>
     </form>
-    <a href="#" onclick="toggleChangePassword()">Changer de mot de passe</a>
-    <form method="post" action="index.php?page=content_changePassword" id="change-password-form" style="display:none;">
+    <div class ="btn"><a class="lienmdp" href="#" onclick="toggleChangePassword()">Changer de mot de passe</a></div>
+    <form method="post" action="index.php?page=modif-profile&todo=changePassword" id="change-password-form" style="display:none;">
         <div class="form-group">
             <label for="oldPassword">Ancien mot de passe :</label>
             <input type="password" id="oldPassword" name="oldPassword" required>

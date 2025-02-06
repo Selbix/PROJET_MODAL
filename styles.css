@@ -679,6 +679,10 @@ body {
 .btn:hover {
     background-color: #2980b9;
 }
+.lienmdp{
+    text-decoration: none;
+    color: white;
+}
 
 /* From Uiverse.io by Yaya12085 */ 
 .custum-file-upload {
@@ -766,4 +770,83 @@ body {
 
 .toast.info {
     background-color: #17a2b8;
+}
+
+.image-review{
+    width : 10%;
+    height : 10%;
+    margin-right : -70px;
+    border-radius: 50%;
+    border-color : white;
+    border-width : 2px solid;
+}
+
+
+/*ERROR ANIMATION A GARDER ET NE PAS CHANGER*/
+.notification-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+/* Individual notification styling */
+.notification {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-left: 4px solid #f5c6cb;
+    padding: 12px 24px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 300px;
+    font-size: 14px;
+    
+    /* Initial state for animation */
+    opacity: 0;
+    transform: translateX(100%);
+    
+    /* Animation properties */
+    animation: slideIn 0.5s forwards, fadeOut 0.5s forwards 4.5s;
+}
+
+/* Different types of notifications */
+.notification.error {
+    background-color: #f8d7da;
+    border-left-color: #dc3545;
+}
+
+.notification.success {
+    background-color: #d4edda;
+    color: #155724;
+    border-left-color: #28a745;
+}
+
+.notification.warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border-left-color: #ffc107;
+}
+
+/* Animations */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(100%);
+    }
 }

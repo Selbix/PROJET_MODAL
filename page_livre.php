@@ -1,5 +1,7 @@
 <?php
+
 if (!isset($_SESSION['loggedIn'])) {
+
     echo '
     <style>
         /* Ensure the body background is blurred */
@@ -59,7 +61,7 @@ if (!isset($_SESSION['loggedIn'])) {
     </div>';
     exit();
 }
-
+$user = $_SESSION['user'];
 
 if (isset($_GET['id'])) {
     $askedLivre = $_GET["id"];
@@ -94,7 +96,7 @@ echo generateHTMLHeader($books[0]["titre"], "styles.css");
 
 <?php
 $dbh = Database::connect();
-
+var_dump($user);
 // Fetch the latest reviews with user names
 $query = "SELECT u.nom_utilisateur AS user_name, r.note, r.avis 
           FROM rating_livre r
@@ -159,6 +161,7 @@ $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <?php foreach ($reviews as $review): ?>
                     <div class="review-card">
                         <div class="review-header">
+                            <img class="image-review" alt="user-pfp" src=<?php echo "uploads/".$user['id'].".jpg"; ?>>
                             <strong><?= htmlspecialchars($review['user_name']); ?></strong>
                             <div class="review-rating">
                                 <?php

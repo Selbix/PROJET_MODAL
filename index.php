@@ -6,6 +6,7 @@ require "utilisateur.php";
 require "printForms.php";
 require "livre.php";
 require "register.php";
+require "changePassword.php";
 session_name("Session_utilisateur");
 session_start();
 if (!isset($_SESSION['initiated'])){
@@ -34,6 +35,11 @@ if (isset($_GET['todo'])) {
             header("Location: index.php?page=connexion");
             exit();
             break;
+        case 'changePassword':
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                changePassword($dbh);
+            }
+            break;
     }
 }
 
@@ -54,6 +60,7 @@ else if(isset($_GET['id'])){
     $lien = "styles.css";
     $authorized = checkPage($askedPage);
 }
+
 echo generateHTMLHeader($pageTitle, $lien);
 ## ADAPTER CODE LOGIN/OUT POUR LA NOUVELLE BDD
 /*
@@ -63,9 +70,7 @@ if(isset($_GET["todo"]) && $_GET["todo"] == "login") {
     //echo "ICI";
     logIn($dbh);
 }
-if(isset($_GET["todo"]) && $_GET["todo"] == "logout") {
-    logOut();
-}
+
 //var_dump($_SESSION);
 echo "<br>";*/
 //var_dump(password_verify("secret", '$2y$10$jFPYCoqfq5IrY1I0xASPX.OVLJxDHUR0G2S5OunyeI5LsnIwuvo8m'));

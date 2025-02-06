@@ -30,6 +30,7 @@ function generateHTMLHeader($titre, $link)
                 <script src="js/bootstrap.bundle.min.js"></script>
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
+                
                 <!-- Mon CSS Perso -->
                 <link href=$link rel="stylesheet">
 
