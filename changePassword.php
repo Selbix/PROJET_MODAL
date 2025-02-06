@@ -35,25 +35,7 @@ function changePassword($dbh) {
         }
     }
 }
-    function displayLoginError2() {
-        if (isset($_GET['error'])) {
-            $error = $_GET['error'];
-            $messages = [
-                'empty_fields' => 'Veuillez remplir tous les champs.',
-                'login_failed' => 'Email ou mot de passe incorrect.',
-                'system_error' => 'Une erreur système est survenue. Veuillez réessayer.',
-                'debug_max' => 'sa march pa',
-                'old_password_incorrect' => 'Old password is incorrect.',
-                'new_password_different' => 'New password and confirm new password are different.',
-                'same_password' => 'Old password and new password are the same.'
-            ];
-            
-            if (isset($messages[$error])) {
-                return "<div class='error-message'>" . htmlspecialchars($messages[$error]) . "</div>";
-            }
-        }
-        return '';
-    }
+
 
 
 

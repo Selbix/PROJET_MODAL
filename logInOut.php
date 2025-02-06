@@ -44,23 +44,7 @@ function logIn($dbh) {
     return false;
 }
 
-// Add this helper function to display error messages in your form
-function displayLoginError() {
-    if (isset($_GET['error'])) {
-        $error = $_GET['error'];
-        $messages = [
-            'empty_fields' => 'Veuillez remplir tous les champs.',
-            'login_failed' => 'Email ou mot de passe incorrect.',
-            'system_error' => 'Une erreur système est survenue. Veuillez réessayer.',
-            'debug_max' => 'sa march pa'
-        ];
-        
-        if (isset($messages[$error])) {
-            return "<div class='error-message'>" . htmlspecialchars($messages[$error]) . "</div>";
-        }
-    }
-    return '';
-}
+
 function logOut() {
     // Destruction de la variable de session loggedIn
     unset($_SESSION['loggedIn']);
