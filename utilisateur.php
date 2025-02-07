@@ -24,7 +24,7 @@ class Utilisateur {
             $this->email = $data['email'] ?? null;
             $this->password = $data['password'] ?? null;
             $this->quote = $data['quote'] ?? null;
-            $this->image = $data['image'] ?? null;
+            //$this->image = $data['image'] ?? null;
         }
     }
 
@@ -62,8 +62,8 @@ class Utilisateur {
 
             // Préparer la requête SQL
             $sth = $dsn->prepare(
-                'INSERT INTO Utilisateurs (nom_utilisateur, nom_complet, email, password, quote, image) 
-                 VALUES (?, ?, ?, ?, ?, ?)'
+                'INSERT INTO Utilisateurs (nom_utilisateur, nom_complet, email, password, quote) 
+                 VALUES (?, ?, ?, ?, ?)'
             );
 
             // Hasher le mot de passe
@@ -71,10 +71,10 @@ class Utilisateur {
 
             // Forcer NULL pour les quotes et images vides
             $quoteValue = empty($this->quote) ? null : $this->quote;
-            $imageValue = empty($this->image) ? null : $this->image;
+            //$imageValue = empty($this->image) ? null : $this->image;
 
             // Logger les valeurs pour le débogage
-            error_log("Saving user: nom_utilisateur={$this->nom_utilisateur}, nom_complet={$this->nom_complet}, email={$this->email}, quote=" . ($quoteValue ?? 'NULL') . ", image=" . ($imageValue ?? 'NULL'));
+            error_log("Saving user: nom_utilisateur={$this->nom_utilisateur}, nom_complet={$this->nom_complet}, email={$this->email}, quote=" . ($quoteValue ?? 'NULL'));// . ", image=" . ($imageValue ?? 'NULL'));
 
             // Exécuter la requête
             return $sth->execute([
@@ -83,7 +83,7 @@ class Utilisateur {
                 $this->email,
                 $mdp_hashed,
                 $quoteValue,
-                $imageValue
+                //$imageValue
             ]);
         } catch (PDOException $e) {
             error_log("Erreur lors de l'enregistrement: " . $e->getMessage());
