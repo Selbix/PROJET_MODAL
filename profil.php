@@ -159,12 +159,14 @@ try {
         }
 
         .book-cover {
-            width: 100px;
-            height: 150px;
-            background-size: cover;
-            background-position: center;
-            margin: 0 auto;
-        }
+    width: 100px;
+    height: 150px;
+    background-size: contain;  /* Ensures the whole image fits */
+    background-position: center;
+    background-repeat: no-repeat;  /* Prevents repeating */
+    margin: 0 auto;
+    border: 1px solid #ddd; /* Optional: adds a subtle border */
+}
 
         .book-title {
             font-size: 14px;
@@ -194,7 +196,7 @@ try {
                 </div>
             </div>
             <div class="profile-details">
-                <h2><?php echo htmlspecialchars($user['nom_utilisateur'] ?? 'Nom utilisateur'); ?></h2>
+                <h2><?php echo htmlspecialchars($user['username'] ?? 'Nom utilisateur'); ?></h2>
             </div>
         </div>
         <div class="quote-container">
@@ -207,7 +209,7 @@ try {
             <?php foreach ($likedBooks as $book): ?>
             <div class="carousel-item">
                 <a href="index.php?id=<?php echo htmlspecialchars($book['id']); ?>" target="_blank">
-                    <div class="book-cover" style="background: url('thumbnail/<?php echo htmlspecialchars($book['id']); ?>.jpg') center/cover no-repeat;"></div>
+                    <div class="book-cover" style="background: url('thumbnail/<?php echo htmlspecialchars($book['id']); ?>.jpg' ) center/cover no-repeat;"></div>
                 </a>
                 <div class="book-title">
                     <p class="titre-livre"><?php echo htmlspecialchars($book['titre']); ?></p>
