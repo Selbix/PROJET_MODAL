@@ -306,7 +306,7 @@ function showNotification(message, type = 'error') {
     </div>
         <div class="profile-details">
             <h2><?php echo htmlspecialchars($user['nom-complet'] ?? ''); ?></h2>
-            <p>Modifier nom d'utilisateur :  <input type="text" id="username" name="username" placeholder=<?php echo htmlspecialchars($user['username'] ?? ''); ?>>
+            <p>Modifier nom d'utilisateur :  <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($user['username'] ?? ''); ?>">
             </p>
 
             <p>Email : <?php echo htmlspecialchars($user['email'] ?? ''); ?></p>
