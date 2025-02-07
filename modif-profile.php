@@ -260,7 +260,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "</pre>";
     }
 }*/
-if ($_SERVER["REQUEST_METHOD"] == "POST"){
+if ($_SERVER["REQUEST_METHOD"] == "POST" & ISSET($_POST['quote'])){
     $citation = trim($_POST['quote']);
     $sth = $dbh->prepare("UPDATE Utilisateurs SET quote = ? WHERE id = ?");
     $sth->execute(array($citation, $user['id']));
@@ -302,20 +302,27 @@ if(!file_exists($user['image'])){
 </span>
         <input type="file" id="file" name="image" accept=".jpg,.jpeg,.png,.gif" onchange="validateAndShowStatus(this)">
         </label>
+        <button type="submit" class="btn">Mettre à jour la photo de profil</button>
+        </form>
     </div>
+
         <div class="profile-details">
-            <h2><?php echo htmlspecialchars($user['nom-complet'] ?? ''); ?></h2>
+            <h2><?php echo htmlspecialchars($user['nom-complet'] ?? ''); ?></h2> 
+            <form method="post" action="index.php?page=modif-profile" enctype="multipart/form-data" class="form-username">
+
             <p>Modifier nom d'utilisateur :  <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($user['username'] ?? ''); ?>">
             </p>
-
+            <button type="submit" class="btn-username">Mettre à jour le nom d'utilisateur</button>
+            </form>
             <p>Email : <?php echo htmlspecialchars($user['email'] ?? ''); ?></p>
         </div>
     </div>
+    <form method="post" action="index.php?page=modif-profile" enctype="multipart/form-data" class ="form-quote">
         <div class="form-group">
             <label for="quote">Citation préférée :</label>
-            <textarea id="quote" name="quote" placeholder="Ajoutez votre citation préférée..."><?php echo htmlspecialchars($user['quote'] ?? ''); ?></textarea>
+            <textarea id="quote" name="quote" placeholder="Ajoutez votre citation préférée..."><?php echo htmlspecialchars($user['quote']); ?></textarea>
         </div>
-        <button type="submit" class="btn">Mettre à jour</button>
+        <button type="submit" class="btn">Mettre à jour la citation</button>
     </form>
 
     <div class ="btn"><a class="lienmdp" href="#" onclick="toggleChangePassword()">Changer de mot de passe</a></div>
