@@ -182,7 +182,7 @@ try {
                 </div>
             </div>
             <div class="profile-details">
-                <h2><?php echo htmlspecialchars($user['nom_utilisateur'] ?? 'Utilisateur'); ?></h2>
+                <h2><?php echo htmlspecialchars($user['username'] ?? 'Utilisateur'); ?></h2>
             </div>
         </div>
         <div class="quote-container">
