@@ -1,5 +1,6 @@
 <?php
 
+
 if (!isset($_SESSION['loggedIn'])) {
     echo '
     <style>
@@ -97,12 +98,17 @@ try {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
     <style>
+        header h1 {
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
         .profile-container {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
             max-width: 1200px;
-            margin: 0 auto;
+            margin: 20px auto;
             padding: 20px;
             background-color: #fff;
             border-radius: 10px;
@@ -142,13 +148,14 @@ try {
             justify-content: center;
         }
 
-        .carousel {
+        .liked-books {
             width: 100%;
             margin-top: 20px;
         }
 
         .carousel-item {
             text-align: center;
+            margin: 10px;
         }
 
         .book-cover {
@@ -168,11 +175,16 @@ try {
             font-size: 12px;
             color: #555;
         }
+
+        .title-margin {
+            margin-left: 20px;
+            margin-right: 20px;
+        }
     </style>
 </head>
 <body>
     <header>
-        <h1>Mon Profil</h1>
+        <h1 class="title-margin">Mon Profil</h1>
     </header>
     <div class="profile-container">
         <div class="profile-header">
@@ -182,7 +194,7 @@ try {
                 </div>
             </div>
             <div class="profile-details">
-                <h2><?php echo htmlspecialchars($user['username'] ?? 'Utilisateur'); ?></h2>
+                <h2><?php echo htmlspecialchars($user['nom_utilisateur'] ?? 'Nom utilisateur'); ?></h2>
             </div>
         </div>
         <div class="quote-container">
@@ -190,7 +202,7 @@ try {
         </div>
     </div>
     <div class="liked-books">
-        <h3>Livres likés</h3>
+        <h3 class="title-margin">Livres likés</h3>
         <div class="carousel">
             <?php foreach ($likedBooks as $book): ?>
             <div class="carousel-item">
@@ -205,9 +217,7 @@ try {
             <?php endforeach; ?>
         </div>
     </div>
-    <footer>
-        <p>&copy; 2025 Votre Bibliothèque</p>
-    </footer>
+    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
     <script>
@@ -225,3 +235,119 @@ try {
     </script>
 </body>
 </html>
+
+<?php
+// Connexion à la base de données
+try {
+    $dbh = new PDO('mysql:host=localhost;dbname=projet_sucre-sale', 'root', '');
+    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    echo 'Erreur : ' . $e->getMessage();
+    exit();
+}
+
+// Récupérer les avis de l'utilisateur
+$userReviews = [];
+try {
+    $sth = $dbh->prepare("SELECT l.titre, r.avis, r.note FROM rating_livre r INNER JOIN livres l ON r.id_titre = l.id WHERE r.id_utilisateur = ?");
+    $sth->execute([$user['id']]);
+    $userReviews = $sth->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    echo 'Erreur lors de la récupération des avis : ' . $e->getMessage();
+    exit();
+}
+?>
+
+<div class="user-reviews">
+    <h3 class="title-margin">Avis laissés</h3>
+    <div class="review-carousel-wrapper">
+        <button class="review-carousel-btn left" onclick="scrollReviewCarousel(-1)">&#8249;</button>
+        <div class="review-carousel">
+            <?php foreach ($userReviews as $review): ?>
+            <div class="review-item">
+                <p class="review-title"><?php echo htmlspecialchars($review['titre']); ?></p>
+                <div class="review-content">
+                    <p><?php echo htmlspecialchars($review['avis']); ?></p>
+                    <div class="star-rating">
+                        <?php
+                        $note = $review['note'];
+                        for ($i = 1; $i <= 5; $i++) {
+                            echo "<span class='star' data-rating='$i'>" . ($i <= $note ? "★" : "☆") . "</span>";
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+        <button class="review-carousel-btn right" onclick="scrollReviewCarousel(1)">&#8250;</button>
+    </div>
+</div>
+
+<script>
+function scrollReviewCarousel(direction) {
+    let carousel = document.querySelector(".review-carousel");
+    carousel.scrollBy({ left: direction * 400, behavior: 'smooth' });
+}
+</script>
+
+<style>
+.review-carousel-wrapper {
+    position: relative;
+}
+
+.review-carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.left {
+    left: -20px;
+}
+
+.right {
+    right: -20px;
+}
+
+.review-carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 10px;
+}
+
+.review-item {
+    min-width: 300px;
+    margin: 10px;
+    padding: 20px;
+    background-color: #444;
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.review-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.star-rating {
+    display: inline-block;
+    font-size: 24px;
+    color: gold;
+}
+
+.title-margin {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+</style>
