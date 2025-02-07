@@ -492,6 +492,7 @@ footer {
 
 /* Styling for individual review cards */
 .review-card {
+    display: inline;
     flex: 0 0 auto;
     width: 300px; /* Increased size for better readability */
     background: #2d3748;
@@ -501,6 +502,7 @@ footer {
     box-shadow: 2px 2px 10px rgba(255, 255, 255, 0.1);
     scroll-snap-align: start;
     text-align: left;
+    align-items: center;
 }
 
 /* Styling for review header (name & stars) */
@@ -932,7 +934,7 @@ body {
 .image-review{
     width : 10%;
     height : 10%;
-    margin-right : -70px;
+    margin-right : -30px;
     border-radius: 50%;
     border-color : white;
     border-width : 2px solid;

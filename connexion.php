@@ -4,7 +4,7 @@
         <form method="post" action="index.php?todo=register">
             <div class="form_group">
                 <label for="reg_username">Nom d'utilisateur :</label>
-                <input class="form_style" type="text" id="reg_username" name="username" required>
+                <input class="form_style" type="text" id="reg_username" name="username" maxlength ="10" required>
             </div>
             <div class="form_group">
                 <label for="reg_fullname">Nom complet :</label>

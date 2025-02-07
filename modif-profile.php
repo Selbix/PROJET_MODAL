@@ -38,7 +38,8 @@
             'old_password_incorrect': 'Ancien mot de passe incorrect.',
             'new_password_different': 'Le nouveau mot de passe et la confirmation ne correspondent pas.',
             'same_password': 'L\'ancien mot de passe et le nouveau sont identiques.',
-            'change_success' : 'Mot de passe changé avec succès.'
+            'change_success' : 'Mot de passe changé avec succès.',
+            'pseudo_long' : "Le pseudo est trop long",
         };
         
         if (error && errorMessages[error]) {
@@ -310,7 +311,7 @@ if(!file_exists($user['image'])){
             <h2><?php echo htmlspecialchars($user['nom-complet'] ?? ''); ?></h2> 
             <form method="post" action="index.php?page=modif-profile" enctype="multipart/form-data" class="form-username">
 
-            <p>Modifier nom d'utilisateur :  <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($user['username'] ?? ''); ?>">
+            <p>Modifier nom d'utilisateur :  <input type="text" id="username" name="username" maxlength ="10" value="<?php echo htmlspecialchars($user['username'] ?? ''); ?>">
             </p>
             <button type="submit" class="btn-username">Mettre à jour le nom d'utilisateur</button>
             </form>
