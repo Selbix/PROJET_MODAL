@@ -217,15 +217,18 @@
         string(4) "TEST"
         }
 
-
+        
         <div class="profile-container">
+            
             <div class="profile-header">
+                
                 <div class="profile-picture-container">
+                    
                     <div class="profile-picture">
                         <img src="uploads/9.jpg?v=1738935873" alt="Photo de profil">
                     </div>
                     <form method="post" action="index.php?page=modif-profile" enctype="multipart/form-data"
-                        class="profile-picture-upload">
+        class="profile-picture-upload">
                         <label class="custum-file-upload" for="file">
                             <span class="icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="" viewBox="0 0 24 24">
@@ -244,6 +247,7 @@
                             <input type="file" id="file" name="image" accept=".jpg,.jpeg,.png,.gif"
                                 onchange="validateAndShowStatus(this)">
                         </label>
+                        </form>
                 </div>
                 <div class="profile-details">
                     <h2>test4</h2>
@@ -253,6 +257,7 @@
                     <p>Email : test4@gmail.com</p>
                 </div>
             </div>
+            <form method="post" action="index.php?page=modif-profile" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="quote">Citation préférée :</label>
                 <textarea id="quote" name="quote" placeholder="Ajoutez votre citation préférée...">TEST</textarea>
