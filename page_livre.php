@@ -4,6 +4,22 @@ if (!isset($_SESSION['loggedIn'])) {
 
     echo '
     <style>
+.review-carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.left { left: 10px; }
+.right { right: 10px; }
+
         /* Ensure the body background is blurred */
         body {
             background-color: #263248;
@@ -88,7 +104,7 @@ if (isset($_GET['id'])) {
 }
 
 
-echo generateHTMLHeader($books[0]["titre"], "styles.css");
+//echo generateHTMLHeader($books[0]["titre"], "styles.css");
 //var_dump($books);
 //echo "<h1>". $book['titre']. "</h1>";
 //var_dump($books);
@@ -133,7 +149,7 @@ var_dump($reviews);
                 <button class="btn2 btn-like2" onclick="likeBook(<?php echo $books[0]['id']; ?>, <?php echo $_SESSION['user']['id']; ?>)">👍</button>
                 </div>
                 <div class="rating2">
-                <div class="rating2">
+                
     <div class="star-rating">
         <?php
         // Get the average rating for this book (you'll need to implement this)
@@ -189,24 +205,6 @@ var_dump($reviews);
 </div>
 </footer>
 
-<style>
-.review-carousel-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.6);
-    color: white;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    padding: 10px;
-    border-radius: 5px;
-}
-
-.left { left: 10px; }
-.right { right: 10px; }
-</style>
-
 <script>
 function scrollReviewCarousel(direction) {
     let carousel = document.querySelector(".review-carousel");
@@ -214,12 +212,8 @@ function scrollReviewCarousel(direction) {
 }
 </script>
 
-
-
-
-
-        </div>
-    </div>
+</div>
+</div>
 
     <div id="reviewModal" class="review-modal">
     <div class="review-modal-content">
@@ -229,7 +223,7 @@ function scrollReviewCarousel(direction) {
         <button id="submitReview" class="review-submit-btn">Publier</button>
     </div>
 </div>
-</body>
+
 <script>
 function likeBook(bookId, userId) {
     let formData = new FormData();

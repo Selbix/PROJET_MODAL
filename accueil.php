@@ -31,7 +31,7 @@ for ($i = 0; $i < $numBooks; $i++) {
    $url = "index.php?id=" . $books[$i]["id"];
    $thumbnailPath = "thumbnail/" . $books[$i]["id"] . ".jpg"; // Path to the thumbnail image
    echo '<div class="carousel-item">';
-   echo "<a href=$url target=_blank>";
+   echo "<a href='$url' target=_blank>";
    echo '<div class="book-cover" style="background: url(' . htmlspecialchars($thumbnailPath) . ') center/cover no-repeat;">';
    echo '</div>';
    echo '</a>';

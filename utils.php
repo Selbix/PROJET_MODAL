@@ -17,8 +17,10 @@ function generateHTMLHeader($titre, $link)
 {
     if($link != "styles-loginout.css"){
     echo "<!DOCTYPE html>";
+    echo "<html lang='fr'>";
     echo <<<FIN
             <head>
+            
                 <title>$titre</title>
                 <meta charset="utf-8">
                 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -40,8 +42,10 @@ function generateHTMLHeader($titre, $link)
 FIN;}
     else{
         echo "<!DOCTYPE html>";
+        echo "<html lang='fr'>";
     echo <<<FIN
             <head>
+                
                 <title>$titre</title>
                 <meta charset="utf-8">
                 <meta http-equiv="X-UA-Compatible" content="IE=edge">

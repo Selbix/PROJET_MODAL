@@ -52,6 +52,99 @@
     }
 
     document.addEventListener('DOMContentLoaded', checkForErrors);
+
+
+function toggleChangePassword() {
+    var form = document.getElementById("change-password-form");
+    form.style.display = (form.style.display === "none") ? "block" : "none";
+}
+
+function validateAndShowStatus(input) {
+const file = input.files[0];
+const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+const maxSize = 20 * 1024 * 1024; // 5MB
+
+if (!file) {
+showToast("Aucun fichier choisi", "error");
+return;
+}
+
+if (!allowedTypes.includes(file.type)) {
+showToast("Seuls les fichiers JPEG, PNG et GIF sont autorisés.", "error");
+input.value = ''; // Reset input
+return;
+}
+
+if (file.size > maxSize) {
+showToast("La taille du fichier ne doit pas dépasser 5 Mo.", "error");
+input.value = ''; // Reset input
+return;
+}
+
+showToast("Fichier prêt à être soumis", "success");
+}
+
+function showToast(message, type = "info") {
+let toastContainer = document.getElementById("toast-container");
+
+// If toast container doesn't exist, create it
+if (!toastContainer) {
+console.log("Creating toast container...");
+toastContainer = document.createElement("div");
+toastContainer.id = "toast-container";
+document.body.appendChild(toastContainer);
+}
+
+console.log("Adding toast:", message); // Debugging log
+
+// Create toast
+const toast = document.createElement("div");
+toast.className = `toast ${type}`;
+toast.innerText = message;
+
+// Ensure it appears in the container
+toastContainer.appendChild(toast);
+console.log("Toast added:", toast);
+toast.style.opacity = "1";
+toast.style.display = "block";
+// Remove after 3 seconds
+setTimeout(() => {
+toast.style.opacity = "0";
+setTimeout(() => {
+    console.log("Removing toast...");
+    toast.remove();
+}, 500);
+}, 5000);
+}
+
+function showNotification(message, type = 'error') {
+// Create container if it doesn't exist
+let container = document.querySelector('.notification-container');
+if (!container) {
+container = document.createElement('div');
+container.className = 'notification-container';
+document.body.appendChild(container);
+}
+
+// Create notification element
+const notification = document.createElement('div');
+notification.className = 'notification \${type}';
+
+notification.textContent = message;
+
+// Add to container
+container.appendChild(notification);
+
+// Remove notification after animation completes
+setTimeout(() => {
+notification.remove();
+}, 5000);
+}
+
+
+
+
+
 </script>
 <?php
 if (!isset($_SESSION['loggedIn'])) {
@@ -195,7 +288,7 @@ if(!file_exists($user['image'])){
         </div>
         <form method="post" action="index.php?page=modif-profile" enctype="multipart/form-data" class="profile-picture-upload">
     <label class="custum-file-upload" for="file">
-        <div class="icon">
+        <span class="icon">
             <svg xmlns="http://www.w3.org/2000/svg" fill="" viewBox="0 0 24 24">
                         <g stroke-width="0" id="SVGRepo_bgCarrier"></g>
                         <g stroke-linejoin="round" stroke-linecap="round" id="SVGRepo_tracerCarrier"></g>
@@ -203,106 +296,12 @@ if(!file_exists($user['image'])){
                             <path fill="" d="M10 1C9.73478 1 9.48043 1.10536 9.29289 1.29289L3.29289 7.29289C3.10536 7.48043 3 7.73478 3 8V20C3 21.6569 4.34315 23 6 23H7C7.55228 23 8 22.5523 8 22C8 21.4477 7.55228 21 7 21H6C5.44772 21 5 20.5523 5 20V9H10C10.5523 9 11 8.55228 11 8V3H18C18.5523 3 19 3.44772 19 4V9C19 9.55228 19.4477 10 20 10C20.5523 10 21 9.55228 21 9V4C21 2.34315 19.6569 1 18 1H10ZM9 7H6.41421L9 4.41421V7ZM14 15.5C14 14.1193 15.1193 13 16.5 13C17.8807 13 19 14.1193 19 15.5V16V17H20C21.1046 17 22 17.8954 22 19C22 20.1046 21.1046 21 20 21H13C11.8954 21 11 20.1046 11 19C11 17.8954 11.8954 17 13 17H14V16V15.5ZM16.5 11C14.142 11 12.2076 12.8136 12.0156 15.122C10.2825 15.5606 9 17.1305 9 19C9 21.2091 10.7909 23 13 23H20C22.2091 23 24 21.2091 24 19C24 17.1305 22.7175 15.5606 20.9844 15.122C20.7924 12.8136 18.858 11 16.5 11Z" clip-rule="evenodd" fill-rule="evenodd"></path> 
                         </g>
                         </svg>
-        </div>
-        <div class="text">
+</span>
+        <span class="text">
             <span>Choisir une image</span>
-        </div>
+</span>
         <input type="file" id="file" name="image" accept=".jpg,.jpeg,.png,.gif" onchange="validateAndShowStatus(this)">
         </label>
-
-<script>
-
-        function toggleChangePassword() {
-            var form = document.getElementById("change-password-form");
-            form.style.display = (form.style.display === "none") ? "block" : "none";
-        }
-
-function validateAndShowStatus(input) {
-    const file = input.files[0];
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-    const maxSize = 20 * 1024 * 1024; // 5MB
-
-    if (!file) {
-        showToast("Aucun fichier choisi", "error");
-        return;
-    }
-
-    if (!allowedTypes.includes(file.type)) {
-        showToast("Seuls les fichiers JPEG, PNG et GIF sont autorisés.", "error");
-        input.value = ''; // Reset input
-        return;
-    }
-
-    if (file.size > maxSize) {
-        showToast("La taille du fichier ne doit pas dépasser 5 Mo.", "error");
-        input.value = ''; // Reset input
-        return;
-    }
-
-    showToast("Fichier prêt à être soumis", "success");
-}
-
-function showToast(message, type = "info") {
-    let toastContainer = document.getElementById("toast-container");
-
-    // If toast container doesn't exist, create it
-    if (!toastContainer) {
-        console.log("Creating toast container...");
-        toastContainer = document.createElement("div");
-        toastContainer.id = "toast-container";
-        document.body.appendChild(toastContainer);
-    }
-
-    console.log("Adding toast:", message); // Debugging log
-
-    // Create toast
-    const toast = document.createElement("div");
-    toast.className = `toast ${type}`;
-    toast.innerText = message;
-    
-    // Ensure it appears in the container
-    toastContainer.appendChild(toast);
-    console.log("Toast added:", toast);
-    toast.style.opacity = "1";
-    toast.style.display = "block";
-    // Remove after 3 seconds
-    setTimeout(() => {
-        toast.style.opacity = "0";
-        setTimeout(() => {
-            console.log("Removing toast...");
-            toast.remove();
-        }, 500);
-    }, 5000);
-}
-
-function showNotification(message, type = 'error') {
-    // Create container if it doesn't exist
-    let container = document.querySelector('.notification-container');
-    if (!container) {
-        container = document.createElement('div');
-        container.className = 'notification-container';
-        document.body.appendChild(container);
-    }
-    
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = 'notification \${type}';
-    
-    notification.textContent = message;
-    
-    // Add to container
-    container.appendChild(notification);
-    
-    // Remove notification after animation completes
-    setTimeout(() => {
-        notification.remove();
-    }, 5000);
-}
-
-
-
-
-</script>
     </div>
         <div class="profile-details">
             <h2><?php echo htmlspecialchars($user['nom-complet'] ?? ''); ?></h2>
@@ -318,6 +317,7 @@ function showNotification(message, type = 'error') {
         </div>
         <button type="submit" class="btn">Mettre à jour</button>
     </form>
+
     <div class ="btn"><a class="lienmdp" href="#" onclick="toggleChangePassword()">Changer de mot de passe</a></div>
     <form method="post" action="index.php?page=modif-profile&todo=changePassword" id="change-password-form" style="display:none;">
         <div class="form-group">
@@ -335,4 +335,4 @@ function showNotification(message, type = 'error') {
         <button type="submit" class="btn">Valider</button>
     </form>
 </div>
-</body>
+
