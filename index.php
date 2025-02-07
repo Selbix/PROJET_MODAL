@@ -79,6 +79,7 @@ echo "<br>";*/
 // code de sélection des pages, comme précédemment
 
 ?>
+
 <script>
 var loggedInUser = <?= json_encode($_SESSION['user'] ?? null) ?>;
 console.log("Logged in user:", loggedInUser);
@@ -95,5 +96,5 @@ console.log("Logged in user:", loggedInUser);
     ?>
     </div>
 
-
+</html>
 
