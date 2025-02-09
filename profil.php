@@ -197,7 +197,7 @@ try {
 <div class="user-reviews">
     <h3 class="title-margin">Avis laissés</h3>
     <div class="review-carousel-wrapper">
-        <button class="review-carousel-btn left" onclick="scrollReviewCarousel(-1)">&#8249;</button>
+        <button class="review-carousel-btn left2" onclick="scrollReviewCarousel(-1)">&#8249;</button>
         <div class="review-carousel">
             <?php foreach ($userReviews as $review): ?>
             <div class="review-item">
@@ -216,7 +216,7 @@ try {
             </div>
             <?php endforeach; ?>
         </div>
-        <button class="review-carousel-btn right" onclick="scrollReviewCarousel(1)">&#8250;</button>
+        <button class="review-carousel-btn right2" onclick="scrollReviewCarousel(1)">&#8250;</button>
     </div>
 </div>
 
@@ -252,13 +252,15 @@ a {
     margin-top : 40px;
     font-family : 'Courier New', Courier, monospace;
 }
-.left {
+.left2 {
     left: -20px;
 }
 
-.right {
+.right2 {
     right: -20px;
 }
+.review-carousel-btn.left2 { margin-left: 40px; }
+.review-carousel-btn.right2 { margin-right: 40px; }
 
 .review-carousel {
     display: flex;
