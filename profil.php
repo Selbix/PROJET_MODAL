@@ -235,6 +235,7 @@ function scrollReviewCarousel(direction) {
 a {
     text-decoration : none;
 }
+
 .review-carousel-btn {
     position: absolute;
     top: 50%;
@@ -368,6 +369,8 @@ p{
 
         .profile-details h2 {
             text-align: center;
+            color: rgb(98, 98, 98);
+
         }
 
 
