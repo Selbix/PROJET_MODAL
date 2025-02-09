@@ -223,12 +223,18 @@ try {
 <script>
 function scrollReviewCarousel(direction) {
     let carousel = document.querySelector(".review-carousel");
-    carousel.scrollBy({ left: direction * 400, behavior: 'smooth' });
+    carousel.scrollBy({ left: direction * 400, behavior: 'smooth'});
 }
 </script>
 </div>
 
 <style>
+.liked-books h3 {
+    margin-bottom: -50px;
+    margin-top : 40px;
+    font-family : 'Courier New', Courier, monospace;
+}
+
 .review-carousel-wrapper {
     position: relative;
 }
@@ -277,6 +283,10 @@ a {
 .review-title {
     font-weight: bold;
     margin-bottom: 10px;
+    font-family : 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+p{
+    font-family : 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 .star-rating {
@@ -287,17 +297,26 @@ a {
 
 .title-margin {
     margin-left: 150px;
-    
+    font-family : 'Courier New', Courier, monospace;
+    font-weight: bold;
+    z-index: 1000;
+
 }
 </style>
 
 <style>
+    .titre-livre {
+        font-family : 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+    .auteur-livre{
+        font-family : 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
         header h1 {
             margin-left: 20px;
             margin-right: 20px;
         }
         h2{
-            color: #2d4b2d;
+            color:rgba(207, 207, 207, 0.91);
         }
         
         .header{
@@ -307,7 +326,7 @@ a {
             padding-top : 10px;
             padding-bottom : 10px;
             font-family : sans-serif;
-            font-color: white;
+            font: white;
             align-items : center;
         }
         .setts{
@@ -326,7 +345,7 @@ a {
             max-width: 1200px;
             margin: 20px auto;
             padding: 20px;
-            background-color:rgb(212, 212, 212);
+            /ackground-color:rgb(212, 212, 212);
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }

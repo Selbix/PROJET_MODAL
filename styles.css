@@ -8,6 +8,10 @@ header {
 
 }
 
+h2 {
+    font-family : 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
 .ontop {
     position: absolute;
     top: 0;
@@ -35,15 +39,27 @@ header {
 }
 
 /* Rest of the styles remain the same */
+/*.nav-link {
+
+}
+    .nav-link:hover {
+    color: rgba(255, 255, 255, 0.8) !important;
+}*/
 .nav-link {
     color: white !important;
     font-size: 1.1rem;
     padding: 0.5rem 1rem !important;
+
+    font-family : 'Courier New', Courier, monospace;
+}
+.nav-item a:hover {
+    color: #264143;
+    background-color: #264143;
+    z-index: 1000;
+    height: 100%;
 }
 
-.nav-link:hover {
-    color: rgba(255, 255, 255, 0.8) !important;
-}
+
 
 /* Search Form Styles */
 .search-container {
@@ -108,13 +124,18 @@ header {
     margin-bottom: 20px;
     text-align: center;
     color : white;
+    font-family : 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
-
+label {
+    font-weight: bold;
+    font-family : 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
 .container label {
     display: block;
     margin-bottom: 8px;
     font-weight: bold;
     color : white;
+    
 }
 
 .container input, .container textarea {
@@ -241,7 +262,7 @@ header {
 }
 
 .container-ajouts h2 {
-    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-family : 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     color : white;
     margin : 0;
 
@@ -482,12 +503,13 @@ footer {
 
 /* Expand the review carousel to fit well in the footer */
 .review-carousel {
+    margin:auto;
     display: flex;
     gap: 15px;
     overflow-x: auto;
     padding-bottom: 10px;
     scroll-snap-type: x mandatory;
-    max-width: 80%; /* Takes a large part of the page */
+    max-width: 90%; /* Takes a large part of the page */
     white-space: nowrap;
     padding: 10px;
 }
@@ -557,8 +579,8 @@ footer {
 }
 
 /* Ensure buttons are inside the review wrapper */
-.review-wrapper .review-carousel-btn.left { left: -50px; }
-.review-wrapper .review-carousel-btn.right { right: -50px; }
+.review-carousel-btn.left { margin-left: 40px; }
+.review-carousel-btn.right { margin-right: 40px; }
 
 /* Style for the no reviews message */
 .no-reviews-card {
@@ -602,6 +624,7 @@ body {
     background-color: #34495e;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;;
 }
 
 .profile-header {
@@ -629,6 +652,7 @@ body {
     height: 150px;
     border-radius: 50%;
     object-fit: cover;
+    margin-right : 20px;
 }
 
 .profile-picture-label {
@@ -645,7 +669,8 @@ body {
 
 .profile-details {
     flex: 1;
-    padding-left: 20px;
+    padding-left: 0px;
+    margin-left: 20px;
 }
 
 .profile-details h2,
@@ -728,7 +753,7 @@ body {
     color: white;
 }
 .form-username{
-    display : flex;
+    display : wrap;
     align-items: center;
 }
 /* From Uiverse.io by gharsh11032000 */ 
@@ -834,6 +859,7 @@ body {
     position: absolute;
     right: 0;
     top: 50%;
+    width: 20%;
     transform: translateY(-50%);
   }
 
@@ -1021,6 +1047,7 @@ body {
 
 .review-profile-clickable:hover{
     color : white; 
+    
 }
 
 
