@@ -179,7 +179,7 @@ var_dump($reviews);
                     <div class="review-card">
                         <div class="review-header">
                             <img class="image-review" alt="user-pfp" src=<?php echo "uploads/".$review['user_id'].".jpg"; ?>>
-                            <strong><?= htmlspecialchars($review['user_name']); ?></strong>
+                            <strong class="review-profile-clickable"><a href="index.php?page=profil&id=<?php echo $review['user_id'] ?>"><?= htmlspecialchars($review['user_name']); ?></a></strong>
                             <div class="review-rating">
                                 <?php
                                 $rating = intval($review['note']);
