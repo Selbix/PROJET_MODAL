@@ -1015,3 +1015,12 @@ body {
 
 
 
+.review-profile-clickable a{
+    text-decoration: none;
+}
+
+.review-profile-clickable:hover{
+    color : white; 
+}
+
+
