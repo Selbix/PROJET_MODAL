@@ -579,8 +579,10 @@ footer {
 }
 
 /* Ensure buttons are inside the review wrapper */
-.review-carousel-btn.left { margin-left: 40px; }
-.review-carousel-btn.right { margin-right: 40px; }
+.review-carousel-btn.left-2 { margin-left: 40px; }
+.review-carousel-btn.right-2 { margin-right: 40px; }
+.review-carousel-btn.left { left: -20px; }
+.review-carousel-btn.right { right: -20px; }
 
 /* Style for the no reviews message */
 .no-reviews-card {
