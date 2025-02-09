@@ -16,9 +16,29 @@ header {
     left: 0;
     padding: 10px;
 }
-
+h2{
+    margin: auto;
+    width : 80%;
+    font-weight: 800;
+    font-family : 'Courier New', Courier, monospace;
+    letter-spacing: 5px;
+}
+label {
+font-weight: bold;
+font-family : 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
 .logo {
     height: 200px; /* Doubler la taille de l'image */
+}
+.nav-link {
+    font-family : 'Courier New', Courier, monospace;
+
+}
+.nav-item a:hover {
+    color: #264143;
+    background-color: #264143;
+    z-index: 1000;
+    height: 100%;
 }
 .ontop {
     position: absolute;
