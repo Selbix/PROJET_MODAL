@@ -167,19 +167,26 @@ function generateMenu() {
     $html .= '</ul>';
     
     // Search form
-    $html .= '<form class="d-flex search-form" role="search">';
-    $html .= '<button type="button" class="btn btn-filter me-2">';
-    $html .= '<i class="fas fa-sliders-h"></i>';
-    $html .= '</button>';
-    $html .= '<div class="search-container">';
-    $html .= '<input class="form-control search-input" type="search" 
-              placeholder="Search something..." aria-label="Search">';
+    $html .= '<form class="d-flex search-form" role="search" method="POST" action="search-results.php">';
+    //$html .= '<button type="button" class="btn btn-filter me-2">';
+    //$html .= '<i class="fas fa-sliders-h"></i>';
+    //$html .= '</button>';
+    /*$html .= '<div class="search-container">';
+    $html .= '<input id="search" name="search" class="form-control search-input" type="text" 
+              placeholder="Recherche..." aria-label="Search">';
     $html .= '<button class="btn btn-search" type="submit">';
     $html .= '<i class="fas fa-search"></i>';
     $html .= '</button>';
-    $html .= '</div>';
-    $html .= '</form>';
+    $html .= '</div>';*/
     
+    $html.= '<div class="input-container">
+    <input
+      class="input"
+id="search" name="search"  type="text" 
+              placeholder="Recherche..." aria-label="Search"
+    />
+  </div>';
+  $html .= '</form>';
     $html .= '</div></div></nav>';
     
     return $html;
