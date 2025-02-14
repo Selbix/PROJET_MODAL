@@ -167,18 +167,18 @@ function generateMenu() {
     $html .= '</ul>';
     
     // Search form
-    $html .= '<form class="d-flex search-form" role="search">';
-    $html .= '<button type="button" class="btn btn-filter me-2">';
-    $html .= '<i class="fas fa-sliders-h"></i>';
-    $html .= '</button>';
-    $html .= '<div class="search-container">';
-    $html .= '<input class="form-control search-input" type="search" 
-              placeholder="Search something..." aria-label="Search">';
-    $html .= '<button class="btn btn-search" type="submit">';
-    $html .= '<i class="fas fa-search"></i>';
-    $html .= '</button>';
-    $html .= '</div>';
-    $html .= '</form>';
+    $html .= '<form class="d-flex search-form" role="search" method="GET" action="index.php">'; 
+$html .= '<input type="hidden" name="page" value="accueil">'; // Pour rester sur la page d'accueil
+$html .= '<button type="button" class="btn btn-filter me-2">';
+$html .= '<i class="fas fa-sliders-h"></i>';
+$html .= '</button>';
+$html .= '<div class="search-container">';
+$html .= '<input class="form-control search-input" type="search" name="search" placeholder="Search something..." aria-label="Search">';
+$html .= '<button class="btn btn-search" type="submit">';
+$html .= '<i class="fas fa-search"></i>';
+$html .= '</button>';
+$html .= '</div>';
+$html .= '</form>';
     
     $html .= '</div></div></nav>';
     
