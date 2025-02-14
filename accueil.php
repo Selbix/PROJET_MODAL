@@ -1,8 +1,23 @@
 <?php
-if (isset($_SESSION['search_results'])) {
-    $books = $_SESSION['search_results'];
+if (isset($_GET['search']) || isset($_GET['genre'])) {
+    $searchTerm = $_GET['search'];
+    $selectedGenre = $_GET['genre'];
+
+    // Construire la requête SQL avec le filtre de genre
+    $sql = "SELECT id, titre, auteur FROM Livres WHERE titre LIKE :searchTerm";
+    if (!empty($selectedGenre)) {
+        $sql .= " AND genre = :selectedGenre";
+    }
+
+    $stmt = $dbh->prepare($sql);
+    $stmt->bindValue(':searchTerm', '%' . $searchTerm . '%', PDO::PARAM_STR);
+    if (!empty($selectedGenre)) {
+        $stmt->bindValue(':selectedGenre', $selectedGenre, PDO::PARAM_STR);
+    }
+
+    $stmt->execute();
+    $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $numBooks = count($books);
-    unset($_SESSION['search_results']);
     
     // Ajout de la condition pour afficher le message si aucun résultat
     if ($numBooks == 0) {
@@ -18,6 +33,7 @@ if (isset($_SESSION['search_results'])) {
     $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $numBooks = count($books);
 }
+
 
 
 echo '<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>';

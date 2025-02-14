@@ -988,6 +988,48 @@ body {
     color: #856404;
     border-left-color: #ffc107;
 }
+/* From Uiverse.io by OnlyCodeChannel */ 
+.searchBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #2f3640;
+  border-radius: 50px;
+  padding: 5px 10px;
+  position: relative;
+}
+
+.searchInput {
+  border: none;
+  background: none;
+  outline: none;
+  color: white;
+  font-size: 15px;
+  padding: 10px;
+  flex-grow: 1;
+}
+
+/* Style pour le bouton de filtrage */
+.btn-filter {
+    background-color: #343a40;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-filter svg {
+    fill: white;
+}
+
+.btn-filter:hover {
+    background-color: #495057;
+}
 
 /* Animations */
 @keyframes slideIn {

@@ -136,6 +136,7 @@ function getPageTitle(string $page): string{
         return "Erreur : cette page n'existe pas";
     }
 }
+
 function generateMenu() {
     global $page_list;
     $html = '<nav class="navbar navbar-expand-lg custom-nav">';
@@ -167,23 +168,45 @@ function generateMenu() {
     $html .= '</ul>';
     
     // Search form
-    $html .= '<form class="d-flex search-form" role="search" method="GET" action="index.php">'; 
-$html .= '<input type="hidden" name="page" value="accueil">'; // Pour rester sur la page d'accueil
-$html .= '<button type="button" class="btn btn-filter me-2">';
-$html .= '<i class="fas fa-sliders-h"></i>';
-$html .= '</button>';
-$html .= '<div class="search-container">';
-$html .= '<input class="form-control search-input" type="search" name="search" placeholder="Search something..." aria-label="Search">';
-$html .= '<button class="btn btn-search" type="submit">';
-$html .= '<i class="fas fa-search"></i>';
-$html .= '</button>';
-$html .= '</div>';
-$html .= '</form>';
+    $html .= '<form class="d-flex searchBox" role="search" method="GET" action="index.php">';
+    $html .= '<input type="hidden" name="page" value="accueil">'; // Pour rester sur la page d'accueil
+    $html .= '<input class="form-control searchInput" type="search" name="search" placeholder="Search something..." aria-label="Search">';
+    
+    // Genre filter dropdown button with style
+    $html .= '<button type="button" class="btn btn-filter me-2" onclick="toggleGenreDropdown()">';
+    $html .= '<svg viewBox="0 0 24 24"><path d="M3 18h6v-2H3v2zm8 0h10v-2H11v2zm-8-5h14v-2H3v2zm8-7v2h10V6H11z"/></svg>';
+    $html .= '</button>';
+
+    $html .= '<select class="form-control" name="genre" id="genreDropdown" style="display: none;">'; // Hide select box but keep it for functionality
+    $html .= '<option value=""></option>'; // Empty option to replace "Tous les genres"
+    $html .= '<option value="Roman">Roman</option>';
+    $html .= '<option value="Scolaire">Scolaire</option>';
+    $html .= '<option value="Théâtre">Théâtre</option>';
+    $html .= '<option value="Policier">Policier</option>';
+    $html .= '<option value="Science-fiction">Science-fiction</option>';
+    $html .= '</select>';
+
+    $html .= '</form>';
     
     $html .= '</div></div></nav>';
     
+    // Ajoutez la fonction JavaScript ici, dans la sortie HTML générée
+    $html .= '<script>
+    function toggleGenreDropdown() {
+        var genreDropdown = document.getElementById("genreDropdown");
+        if (genreDropdown.style.display === "none" || genreDropdown.style.display === "") {
+            genreDropdown.style.display = "block";
+        } else {
+            genreDropdown.style.display = "none";
+        }
+    }
+    </script>';
+    
     return $html;
 }
+
+
+
 
 
 /*function generateMenu(){
