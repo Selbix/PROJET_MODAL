@@ -15,6 +15,31 @@ if (!isset($_SESSION['initiated'])){
 }
 
 $dbh = Database::connect();
+
+// Gestion de la recherche
+$searchResults = null;
+if (isset($_GET['search']) && !empty($_GET['search'])) {
+    $searchTerm = htmlspecialchars($_GET['search']);
+    try {
+        // Modification de la requête pour chercher spécifiquement dans le titre
+        $query = "SELECT id, titre, auteur FROM Livres WHERE titre LIKE :search";
+        $stmt = $dbh->prepare($query);
+        $stmt->execute(['search' => '%' . $searchTerm . '%']);
+        $searchResults = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        // Si on a des résultats, on les stocke
+        if ($searchResults) {
+            $_SESSION['search_results'] = $searchResults;
+        } else {
+            // Si aucun résultat, tableau vide
+            $_SESSION['search_results'] = [];
+        }
+    } catch(PDOException $e) {
+        error_log("Erreur de recherche : " . $e->getMessage());
+        $_SESSION['search_results'] = [];
+    }
+}
+
 if (isset($_GET['todo'])) {
     switch ($_GET['todo']) {
         case 'login':
