@@ -27,7 +27,7 @@ if (isset($_GET['search']) || isset($_GET['genre'])) {
         exit(); // On arrête l'exécution pour ne pas afficher le carrousel vide
     }
 } else {
-    $query = "SELECT id, titre, auteur FROM Livres";
+    $query = "SELECT id, titre, auteur FROM Livres ORDER BY id DESC";
     $stmt = $dbh->prepare($query);
     $stmt->execute();
     $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -53,6 +53,38 @@ echo '<script>
       </script>';
 echo '<div class="container-ajouts">';
 echo '<h2> Ajouts récents </h2>';
+echo '</div>';
+echo '<div class="carousel">';
+for ($i = 0; $i < $numBooks; $i++) {
+   $url = "index.php?id=" . $books[$i]["id"];
+   $thumbnailPath = "thumbnail/" . $books[$i]["id"] . ".jpg";
+   echo '<div class="carousel-item">';
+   echo "<a href='$url' target=_blank>";
+   echo '<div class="book-cover" style="background: url(' . htmlspecialchars($thumbnailPath) . ') center/cover no-repeat;">';
+   echo '</div>';
+   echo '</a>';
+   echo '<div class="book-title"> <p class="titre-livre">' . htmlspecialchars($books[$i]['titre']) . '</p></div>';
+   echo '</div>';
+}
+echo '</div>';
+
+$query = "SELECT 
+    L.id,
+    L.titre,
+    L.auteur,
+    COUNT(R.id) AS nombre_notes,
+    AVG(R.note) AS moyenne_notes
+FROM Livres L
+LEFT JOIN rating_livre R ON L.id = R.id_titre
+GROUP BY L.id, L.titre, L.auteur
+ORDER BY nombre_notes DESC, moyenne_notes DESC;";
+$stmt = $dbh->prepare($query);
+$stmt->execute();
+$books = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$numBooks = count($books);
+
+echo '<div class="container-ajouts">';
+echo '<h2>Les plus populaires</h2>';
 echo '</div>';
 echo '<div class="carousel">';
 for ($i = 0; $i < $numBooks; $i++) {

@@ -40,6 +40,7 @@ function generateHTMLHeader($titre, $link)
             </head>
             <body>
 FIN;}
+
     else{
         echo "<!DOCTYPE html>";
         echo "<html lang='fr'>";

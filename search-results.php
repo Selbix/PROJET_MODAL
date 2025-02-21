@@ -46,7 +46,9 @@ echo generateHTMLHeader("Recherche de Livres", "styles.css");
 <div id="content" class="content">
     <!-- Search form section -->
     <div class="book-search-form-container">
-        <form method="POST" action="">
+
+         <form method="POST" >
+
             <input type="text" 
                    name="search" 
                    class="book-search-input" 

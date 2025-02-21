@@ -129,7 +129,7 @@ if(isset($_GET['page']) && $_GET['page'] === 'connexion' && isset($_SESSION["log
 </div>
     <div id="content" class="content">
     <?php require "{$askedPage}.php";
-    var_dump($_SESSION);
+    //var_dump($_SESSION);
     ?>
     </div>
 
