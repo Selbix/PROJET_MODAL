@@ -126,14 +126,14 @@ FIN;
                 </div>
             </div>
             <div class="profile-details">
-                <h2><?php echo htmlspecialchars($user['username'] ?? 'Nom utilisateur'); ?></h2>
+                <h2><?php echo htmlspecialchars($user['username'] ?? $user['nom_utilisateur'] ?? 'Nom utilisateur'); ?></h2>
             </div>
         </div>
         <!-- <div class="quote-container"> -->
         <div class="book">
     <p><?php echo htmlspecialchars($user['quote'] ?? 'Aucune citation disponible :('); ?></p>
     <div class="cover">
-        <p>Citations Préférée</p>
+        <p>Citations Préférée </p>
     </div>
    </div>
         <!--</div>-->
