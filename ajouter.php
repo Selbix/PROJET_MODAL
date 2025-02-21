@@ -14,6 +14,7 @@ echo <<<FIN
 
         <label for="genre">Genre</label>
         <select id="genre" name="genre" required>
+            <option value="">Choisir un genre</option>
             <option value="Roman">Roman</option>
             <option value="Théâtre">Théâtre</option>
             <option value="Scolaire">Scolaire</option>

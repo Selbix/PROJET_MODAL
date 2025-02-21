@@ -27,7 +27,7 @@ if (isset($_GET['search']) || isset($_GET['genre'])) {
         exit(); // On arrête l'exécution pour ne pas afficher le carrousel vide
     }
 } else {
-    $query = "SELECT id, titre, auteur FROM Livres";
+    $query = "SELECT id, titre, auteur FROM Livres ORDER BY id DESC";
     $stmt = $dbh->prepare($query);
     $stmt->execute();
     $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
