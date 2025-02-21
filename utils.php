@@ -139,7 +139,8 @@ function getPageTitle(string $page): string{
 }
 
 function generateMenu() {
-    global $page_list;
+    global $page_list, $dbh; // Assume $dbh is already connected
+
     $html = '<nav class="navbar navbar-expand-lg custom-nav">';
     $html .= '<div class="container-fluid">';
     
@@ -159,76 +160,84 @@ function generateMenu() {
     $html .= '<div class="collapse navbar-collapse" id="navbarContent">';
     $html .= '<ul class="navbar-nav me-auto mb-2 mb-lg-0">';
     
-    // Generate menu items
-    foreach($page_list as $key => $page) {
+    // Generate menu items dynamically
+    foreach ($page_list as $key => $page) {
         $html .= '<li class="nav-item">';
         $html .= '<a class="nav-link" href="index.php?page=' . $key . '">' . $page . '</a>';
         $html .= '</li>';
     }
     
     $html .= '</ul>';
-    
+
     // Search form
-/*// NEW CODE FROM barrecherche COMMIT
-    $html .= '<form class="d-flex searchBox" role="search" method="GET" action="index.php">';
-    $html .= '<input type="hidden" name="page" value="accueil">'; // Pour rester sur la page d'accueil
-    $html .= '<input class="form-control searchInput" type="search" name="search" placeholder="Search something..." aria-label="Search">';
-    
-    // Genre filter dropdown button with style
-    $html .= '<button type="button" class="btn btn-filter me-2" onclick="toggleGenreDropdown()">';
-    $html .= '<svg viewBox="0 0 24 24"><path d="M3 18h6v-2H3v2zm8 0h10v-2H11v2zm-8-5h14v-2H3v2zm8-7v2h10V6H11z"/></svg>';
-    $html .= '</button>';
+    $html .= '<form class="d-flex search-form" role="search" method="POST" action="search-results.php" style="
+    display: flex;
+    align-items: center; /* Centers items vertically */
+    justify-content: center; /* Optional: Centers items horizontally */
+    gap: 8px; /* Adds spacing between elements */
+">
+';    $html .= '<div class="input-container">';
+    $html .= '<input class="input form-control" id="search" name="search" type="text" placeholder="Recherche..." aria-label="Search"/>';
+    $html .= '</div>';
 
-    $html .= '<select class="form-control" name="genre" id="genreDropdown" style="display: none;">'; // Hide select box but keep it for functionality
-    $html .= '<option value=""></option>'; // Empty option to replace "Tous les genres"
-    $html .= '<option value="Roman">Roman</option>';
-    $html .= '<option value="Scolaire">Scolaire</option>';
-    $html .= '<option value="Théâtre">Théâtre</option>';
-    $html .= '<option value="Policier">Policier</option>';
-    $html .= '<option value="Science-fiction">Science-fiction</option>';
-    $html .= '</select>';
-
-    $html .= '</form>';*/
-// FIN NEW CODE FROM barrecherche COMMIT
-
-    //OLD CODE
-   $html .= '<form class="d-flex search-form" role="search" method="POST" action="search-results.php">';
-    //$html .= '<button type="button" class="btn btn-filter me-2">';
-    //$html .= '<i class="fas fa-sliders-h"></i>';
-    //$html .= '</button>';
-    /*$html .= '<div class="search-container">';
-    $html .= '<input id="search" name="search" class="form-control search-input" type="text" 
-              placeholder="Recherche..." aria-label="Search">';
-    $html .= '<button class="btn btn-search" type="submit">';
-    $html .= '<i class="fas fa-search"></i>';
-    $html .= '</button>';
-    $html .= '</div>';*/
-//>>>>>>> main
-    
-    $html.= '<div class="input-container">
-    <input
-      class="input"
-id="search" name="search"  type="text" 
-              placeholder="Recherche..." aria-label="Search"
-    />
-  </div>';
-  $html .= '</form>';
+    // ✅ ADD RANDOM BOOK BUTTON (WORKS NOW)
+    $html .= '<button type="button" id="randomBookButton" style="
+    font-size: 12px;
+    font-weight: bold;
+    border: none;
+    height : 60%;
+    cursor: pointer;
+    border-radius: 0.5em;
+    background: #000000;
+    display: inline-block;
+    box-sizing: border-box;
+    border: 1px solid #000000;
+    padding: 0.3em 0.8em;
+    background: #e8e8e8;
+    color: #000000;
+    transform: translateY(-0.1em);
+    transition: transform 0.1s ease;
+" onmouseover="this.style.transform=\'translateY(-0.2em)\'"
+   onmouseout="this.style.transform=\'translateY(-0.1em)\'"
+   onmousedown="this.style.transform=\'translateY(0)\'"
+   onmouseup="this.style.transform=\'translateY(-0.1em)\'">
+    Aléatoire
+</button>';
+   
+    $html .= '</form>';
     $html .= '</div></div></nav>';
-    
-    // Ajoutez la fonction JavaScript ici, dans la sortie HTML générée
-    $html .= '<script>
-    function toggleGenreDropdown() {
-        var genreDropdown = document.getElementById("genreDropdown");
-        if (genreDropdown.style.display === "none" || genreDropdown.style.display === "") {
-            genreDropdown.style.display = "block";
-        } else {
-            genreDropdown.style.display = "none";
+
+    // ✅ Fetch a random book ID directly in PHP
+    $randomBookId = null;
+    try {
+        $query = "SELECT id FROM Livres ORDER BY id DESC";
+        $stmt = $dbh->prepare($query);
+        $stmt->execute();
+        $books = $stmt->fetchAll(PDO::FETCH_COLUMN, 0); // Fetch only 'id' column
+
+        if (!empty($books)) {
+            $randomBookId = $books[array_rand($books)]; // Select a random book ID
         }
+    } catch (Exception $e) {
+        $randomBookId = null; // In case of error, no book is selected
     }
+
+    // ✅ JavaScript for Random Book Redirect (Now Works)
+    $html .= '<script>
+    document.getElementById("randomBookButton").addEventListener("click", function() {
+        var randomBookId = "' . ($randomBookId ?? '') . '";
+        if (randomBookId) {
+            window.location.href = "http://localhost/PROJET_MODAL/index.php?id=" + randomBookId;
+        } else {
+            alert("Aucun livre trouvé.");
+        }
+    });
     </script>';
-    
+
     return $html;
 }
+
+
 
 
 
