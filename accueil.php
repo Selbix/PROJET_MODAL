@@ -99,6 +99,51 @@ for ($i = 0; $i < $numBooks; $i++) {
    echo '</div>';
 }
 echo '</div>';
+
+    // Step 1: Select a random genre
+    $genreQuery = "SELECT genre FROM Livres ORDER BY RAND() LIMIT 1";
+    $genreStmt = $dbh->prepare($genreQuery);
+    $genreStmt->execute();
+    $randomGenre = $genreStmt->fetchColumn();
+
+    // Step 2: Retrieve books from the selected genre
+    $query = "SELECT 
+        L.id,
+        L.titre,
+        L.auteur,
+        COUNT(R.id) AS nombre_notes,
+        AVG(R.note) AS moyenne_notes
+    FROM Livres L
+    LEFT JOIN rating_livre R ON L.id = R.id_titre
+    WHERE L.genre = :genre
+    GROUP BY L.id, L.titre, L.auteur
+    ORDER BY nombre_notes DESC, moyenne_notes DESC
+    LIMIT 10";
+
+    $stmt = $dbh->prepare($query);
+    $stmt->bindParam(':genre', $randomGenre, PDO::PARAM_STR);
+    $stmt->execute();
+    $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $numBooks = count($books);
+
+    echo '<div class="container-ajouts">';
+    echo "<h2>Sélection aléatoire du genre : <span class='selected-genre'>" . htmlspecialchars($randomGenre) . "</span></h2>";
+    echo '</div>';
+    
+    echo '<div class="carousel">';
+    for ($i = 0; $i < $numBooks; $i++) {
+        $url = "index.php?id=" . $books[$i]["id"];
+        $thumbnailPath = "thumbnail/" . $books[$i]["id"] . ".jpg";
+        
+        echo '<div class="carousel-item">';
+        echo "<a href='$url' target=_blank>";
+        echo '<div class="book-cover" style="background: url(' . htmlspecialchars($thumbnailPath) . ') center/cover no-repeat;">';
+        echo '</div>';
+        echo '</a>';
+        echo '<div class="book-title"> <p class="titre-livre">' . htmlspecialchars($books[$i]['titre']) . '</p></div>';
+        echo '</div>';
+    }
+    echo '</div>';
 ?>
 
 
