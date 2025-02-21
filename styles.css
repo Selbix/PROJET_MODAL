@@ -129,7 +129,7 @@ label {
     color : white;
 }
 
-.container input, .container textarea {
+.container input, .container textarea, .container select {
     width: calc(100% - 20px); /* Adjust width to account for padding */
     padding: 8px 10px;
     margin-bottom: 15px; /* Increase bottom margin for better spacing */
@@ -1478,4 +1478,23 @@ body {
   .radio-input label:nth-child(2):has(input:checked) ~ .selection {
     transform: translateX(calc(var(--container_width) * 1 / 2));
   }
-  
+
+  /* BOUTON FLOTTANT */
+  .floating-admin-button {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+    z-index: 1000;
+}
+
+.floating-admin-button:hover {
+    background-color: #0056b3;
+}

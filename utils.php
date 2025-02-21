@@ -168,7 +168,7 @@ function generateMenu() {
     $html .= '</ul>';
     
     // Search form
-// NEW CODE FROM barrecherche COMMIT
+/*// NEW CODE FROM barrecherche COMMIT
     $html .= '<form class="d-flex searchBox" role="search" method="GET" action="index.php">';
     $html .= '<input type="hidden" name="page" value="accueil">'; // Pour rester sur la page d'accueil
     $html .= '<input class="form-control searchInput" type="search" name="search" placeholder="Search something..." aria-label="Search">';
@@ -187,9 +187,11 @@ function generateMenu() {
     $html .= '<option value="Science-fiction">Science-fiction</option>';
     $html .= '</select>';
 
-    $html .= '</form>';
-//OLD CODE
-   // $html .= '<form class="d-flex search-form" role="search" method="POST" action="search-results.php">';
+    $html .= '</form>';*/
+// FIN NEW CODE FROM barrecherche COMMIT
+
+    //OLD CODE
+   $html .= '<form class="d-flex search-form" role="search" method="POST" action="search-results.php">';
     //$html .= '<button type="button" class="btn btn-filter me-2">';
     //$html .= '<i class="fas fa-sliders-h"></i>';
     //$html .= '</button>';

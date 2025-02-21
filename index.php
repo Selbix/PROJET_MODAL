@@ -110,13 +110,26 @@ var loggedInUser = <?= json_encode($_SESSION['user'] ?? null) ?>;
 console.log("Logged in user:", loggedInUser);
 </script>
 
+<?php
+$user_id = $_SESSION['user']['id'];
+$stmt = $dbh->prepare("SELECT id FROM administateurs WHERE id_utilisateurs = ?");
+$stmt->execute([$user_id]);
+$admin = $stmt->fetch();
+if($admin){
+    echo '<a href="admin.php" class="floating-admin-button">Admin Panel</a>';
+}
+if(isset($_GET['page']) && $_GET['page'] === 'connexion' && isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) {
+    header("Location: index.php?page=accueil");
+    exit();
+}
+?>
 
 <div class="container-fluid ontop">
     <?php echo generateMenu(); ?>
 </div>
     <div id="content" class="content">
     <?php require "{$askedPage}.php";
-    //var_dump($_SESSION);
+    var_dump($_SESSION);
     ?>
     </div>
 
