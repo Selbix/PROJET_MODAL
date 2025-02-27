@@ -21,7 +21,7 @@ if (!isset($_SESSION['user'])) {
     exit();
 }
 
-// Check if user is an administrator
+// Vérifie si l'utilisateur est un admin
 $user_id = $_SESSION['user']['id'];
 $stmt = $dbh->prepare("SELECT id FROM administateurs WHERE id_utilisateurs = ?");
 $stmt->execute([$user_id]);
@@ -36,7 +36,7 @@ if (!$admin) {
 if (empty($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
-// Handle Admin Privileges
+// Gestion des privilèges de l'admin
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_admin'])) {
     if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
         die("CSRF token validation failed");
@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_admin'])) {
 }
 
 
-// Handle Book Deletion
+// Gestion de la suppression de livres
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_book'])) {
     if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
         die("CSRF token validation failed");
@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_book'])) {
     $_SESSION['message'] = "Livre supprimé avec succès";
 }
 
-// Handle Review Deletion
+// Gestion de la suppression d'avis
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_review'])) {
     if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
         die("CSRF token validation failed");
@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_review'])) {
     $_SESSION['message'] = "Avis supprimé avec succès";
 }
 
-// Handle User Deletion
+// Gestion de la suppression d'utilisateurs
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_user'])) {
     if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
         die("CSRF token validation failed");
@@ -90,23 +90,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_user'])) {
     $_SESSION['message'] = "Utilisateur supprimé avec succès";
 }
 
-// Fetch Books
+// Chercher les livres, avis, utilisateurs pour les rassembler dans un tableau
 $books = $dbh->query("SELECT id, titre, auteur, date_parution, nombre_notes FROM Livres ORDER BY id DESC")->fetchAll();
-// Fetch Reviews
 $reviews = $dbh->query("SELECT rating_livre.id, Livres.titre, Utilisateurs.nom_utilisateur, rating_livre.note, rating_livre.avis FROM rating_livre INNER JOIN Livres ON rating_livre.id_titre = Livres.id INNER JOIN Utilisateurs ON rating_livre.id_utilisateur = Utilisateurs.id ORDER BY rating_livre.id DESC")->fetchAll();
-// Fetch Users
-$users = $dbh->query("
-    SELECT 
-        u.id,
-        u.nom_utilisateur,
-        u.email,
-        u.quote,
-        a.id as admin_id
-    FROM Utilisateurs u
-    LEFT JOIN administateurs a ON u.id = a.id_utilisateurs 
-    ORDER BY u.id DESC
-")->fetchAll();
+$users = $dbh->query("SELECT u.id, u.nom_utilisateur, u.email, u.quote, a.id as admin_id FROM Utilisateurs u LEFT JOIN administateurs a ON u.id = a.id_utilisateurs ORDER BY u.id DESC")->fetchAll();
+    
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

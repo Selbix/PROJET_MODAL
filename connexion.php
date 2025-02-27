@@ -1,5 +1,4 @@
-
-<div class="container">
+<div class="container"> 
     <div class="form_area inscription">
         <h2 class="title">INSCRIPTION</h2>
         <form method="post" action="index.php?todo=register">

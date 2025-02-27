@@ -1,4 +1,5 @@
 <?php
+// Vérification si les paramètres 'search' ou 'genre' sont passés dans l'URL
 if (isset($_GET['search']) || isset($_GET['genre'])) {
     $searchTerm = $_GET['search'];
     $selectedGenre = $_GET['genre'];
@@ -27,6 +28,7 @@ if (isset($_GET['search']) || isset($_GET['genre'])) {
         exit(); // On arrête l'exécution pour ne pas afficher le carrousel vide
     }
 } else {
+    // Si aucun paramètre de recherche n'est passé, récupérer tous les livres triés par ID décroissant
     $query = "SELECT id, titre, auteur FROM Livres ORDER BY id DESC";
     $stmt = $dbh->prepare($query);
     $stmt->execute();
@@ -34,7 +36,7 @@ if (isset($_GET['search']) || isset($_GET['genre'])) {
     $numBooks = count($books);
 }
 
-
+// Inclusion des scripts nécessaires pour le carrousel
 
 echo '<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>';
 echo '<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>';
@@ -51,6 +53,9 @@ echo '<script>
             });
         });
       </script>';
+
+// Affichage de la section des ajouts récents
+
 echo '<div class="container-ajouts">';
 echo '<h2> Ajouts récents </h2>';
 echo '</div>';
@@ -67,6 +72,8 @@ for ($i = 0; $i < $numBooks; $i++) {
    echo '</div>';
 }
 echo '</div>';
+
+// Affichage des livres les plus populaires
 
 $query = "SELECT 
     L.id,
@@ -87,6 +94,8 @@ echo '<div class="container-ajouts">';
 echo '<h2>Les plus populaires</h2>';
 echo '</div>';
 echo '<div class="carousel">';
+
+// Boucle pour afficher les livres populaires
 for ($i = 0; $i < $numBooks; $i++) {
    $url = "index.php?id=" . $books[$i]["id"];
    $thumbnailPath = "thumbnail/" . $books[$i]["id"] . ".jpg";
@@ -100,13 +109,13 @@ for ($i = 0; $i < $numBooks; $i++) {
 }
 echo '</div>';
 
-    // Step 1: Select a random genre
+    // Sélection d'un genre aléatoire et affichage des livres associés
     $genreQuery = "SELECT genre FROM Livres ORDER BY RAND() LIMIT 1";
     $genreStmt = $dbh->prepare($genreQuery);
     $genreStmt->execute();
     $randomGenre = $genreStmt->fetchColumn();
 
-    // Step 2: Retrieve books from the selected genre
+    // Chercher les livres du genre choisi
     $query = "SELECT 
         L.id,
         L.titre,

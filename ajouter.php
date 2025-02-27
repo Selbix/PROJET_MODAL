@@ -1,4 +1,5 @@
 <?php
+// Affichage du formulaire HTML pour ajouter un livre
 echo <<<FIN
 <div class="container">
     <h2>Ajouter un livre/document</h2>
@@ -40,9 +41,11 @@ var_dump($_FILES);
 var_dump(!empty($_FILES['file']['tmp_name']));
 var_dump(is_uploaded_file($_FILES['file']['tmp_name']));
 
+// Vérification si un fichier a bien été téléchargé et est valide
     if (!empty($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']
 ['tmp_name'])) {
-    //echo "ICI";
+    // Si le fichier est valide, on insère les données du livre dans la base de données
+    // Appel de la méthode insererLivre de la classe Livres pour enregistrer les informations
     Livres::insererLivre( $dbh, $_POST["titre"],  $_POST["auteur"], $_POST["genre"], $_POST["date_sortie"], $_POST["description"],  $_FILES["file"]["type"],  $_FILES["file"]["tmp_name"]);
     $form_values_valid = true;
   }
