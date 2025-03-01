@@ -7,15 +7,19 @@ $page_list = [
     'modif-profile' => 'Modifier mon profil',
 ];
 
+// Fonction pour générer le pied de page
 function generateHTMLFooter()
 {
     echo "</body>";
     echo "<footer>";
     echo "</footer>";
 }
+
+// Fonction pour générer l'en-tête HTML de la page
 function generateHTMLHeader($titre, $link)
-{
+{   
     if($link != "styles-loginout.css"){
+    // Si la page n'est pas la page de connexion, on génère l'en-tête complet
     echo "<!DOCTYPE html>";
     echo "<html lang='fr'>";
     echo <<<FIN
@@ -42,6 +46,7 @@ function generateHTMLHeader($titre, $link)
 FIN;}
 
     else{
+        // Si c'est la page de connexion, on génère l'en-tête spécifique
         echo "<!DOCTYPE html>";
         echo "<html lang='fr'>";
     echo <<<FIN
@@ -119,6 +124,7 @@ document.addEventListener('DOMContentLoaded', checkForErrors);
 FIN;
     }
 }
+// Fonction pour vérifier si une page demandée existe
 function checkPage($askedPage): bool{
     global $page_list;
     foreach($page_list as $page => $valeur){
@@ -128,6 +134,7 @@ function checkPage($askedPage): bool{
     }
     return false;
 }
+// Fonction pour récupérer le titre de la page demandée
 function getPageTitle(string $page): string{
     global $page_list;
     if(checkPage($page)) {
@@ -137,9 +144,9 @@ function getPageTitle(string $page): string{
         return "Erreur : cette page n'existe pas";
     }
 }
-
+// Fonction pour générer le menu de navigation
 function generateMenu() {
-    global $page_list, $dbh; // Assume $dbh is already connected
+    global $page_list, $dbh; 
 
     $html = '<nav class="navbar navbar-expand-lg custom-nav">';
     $html .= '<div class="container-fluid">';
@@ -149,18 +156,18 @@ function generateMenu() {
     $html .= '<img src="logo(1).png" alt="Sucré-Salé" class="nav-logo">';
     $html .= '</a>';
     
-    // Toggler for mobile
+    // Toggler pour les petits écrans
     $html .= '<button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
               data-bs-target="#navbarContent" aria-controls="navbarContent" 
               aria-expanded="false" aria-label="Toggle navigation">';
     $html .= '<span class="navbar-toggler-icon"></span>';
     $html .= '</button>';
     
-    // Main navigation content
+    // Contenu principal du menu
     $html .= '<div class="collapse navbar-collapse" id="navbarContent">';
     $html .= '<ul class="navbar-nav me-auto mb-2 mb-lg-0">';
     
-    // Generate menu items dynamically
+    // Génération dynamique des éléments du menu à partir du tableau $page_list
     foreach ($page_list as $key => $page) {
         $html .= '<li class="nav-item">';
         $html .= '<a class="nav-link" href="index.php?page=' . $key . '">' . $page . '</a>';
@@ -169,7 +176,7 @@ function generateMenu() {
     
     $html .= '</ul>';
 
-    // Search form
+    // Formulaire de recherche
     $html .= '<form class="d-flex search-form" role="search" method="POST" action="search-results.php" style="
     display: flex;
     align-items: center; /* Centers items vertically */
@@ -180,7 +187,7 @@ function generateMenu() {
     $html .= '<input class="input form-control" id="search" name="search" type="text" placeholder="Recherche..." aria-label="Search"/>';
     $html .= '</div>';
 
-    // ✅ ADD RANDOM BOOK BUTTON (WORKS NOW)
+    // Affichage d'un livre aléatoire
     $html .= '<button type="button" id="randomBookButton" style="
     font-size: 12px;
     font-weight: bold;
@@ -207,22 +214,22 @@ function generateMenu() {
     $html .= '</form>';
     $html .= '</div></div></nav>';
 
-    // ✅ Fetch a random book ID directly in PHP
+    // Sélection d'un livre aléatoire dans la base de données
     $randomBookId = null;
     try {
         $query = "SELECT id FROM Livres ORDER BY id DESC";
         $stmt = $dbh->prepare($query);
         $stmt->execute();
-        $books = $stmt->fetchAll(PDO::FETCH_COLUMN, 0); // Fetch only 'id' column
+        $books = $stmt->fetchAll(PDO::FETCH_COLUMN, 0); // Récupère seulement la colonne 'id'
 
         if (!empty($books)) {
-            $randomBookId = $books[array_rand($books)]; // Select a random book ID
+            $randomBookId = $books[array_rand($books)]; // Sélectionne un livre aléatoire
         }
     } catch (Exception $e) {
-        $randomBookId = null; // In case of error, no book is selected
+        $randomBookId = null; // En cas d'erreur, pas de livre sélectionné
     }
 
-    // ✅ JavaScript for Random Book Redirect (Now Works)
+     // Script JavaScript pour rediriger vers un livre aléatoire
     $html .= '<script>
     document.getElementById("randomBookButton").addEventListener("click", function() {
         var randomBookId = "' . ($randomBookId ?? '') . '";

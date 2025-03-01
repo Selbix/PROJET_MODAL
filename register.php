@@ -3,7 +3,7 @@
 require_once 'database.php';
 require_once 'utilisateur.php';
 
-// Wrap all the registration logic in a function
+//Fonction d'inscription
 function handleRegistration($dbh) {
     if (!isset($_GET['todo']) || $_GET['todo'] !== 'register') {
         return false;
