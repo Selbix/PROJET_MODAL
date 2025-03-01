@@ -9,12 +9,12 @@ require "register.php";
 
 $dbh = Database::connect();
 
-// Ensure book_id and user_id are received
+// Vérifie que book_id et user_id ont été reçus
 if (isset($_POST['book_id']) && isset($_POST['user_id'])) {
-    $userId = intval($_POST['user_id']); // Get user ID from frontend
-    $bookId = intval($_POST['book_id']); // Get book ID safely
+    $userId = intval($_POST['user_id']); 
+    $bookId = intval($_POST['book_id']); 
 
-    // Check if the book is already liked
+    // Vérifie si le livre a déjà été liké
     $checkQuery = "SELECT * FROM Enregistrement_Livres WHERE id_utilisateur = ? AND id_titre = ?";
     $stmt = $dbh->prepare($checkQuery);
     $stmt->execute([$userId, $bookId]);
@@ -24,7 +24,7 @@ if (isset($_POST['book_id']) && isset($_POST['user_id'])) {
         exit();
     }
 
-    // Insert into "Enregistrement_Livres" table
+    // Si pas déjà liké, il est inséré dans Enregistrement_Livres
     $query = "INSERT INTO Enregistrement_Livres (id_titre, id_utilisateur) VALUES (?, ?)";
     $stmt = $dbh->prepare($query);
 

@@ -1,7 +1,8 @@
 <script>
-    // Function to create and show notifications
+    
+    // Fonction qui crée et renvoie des notifications
     function showNotification(message, type = 'error') {
-        // Create container if it doesn't exist
+        // Crée un conteneur pour les notifications s'il n'existe pas
         let container = document.querySelector('.notification-container');
         if (!container) {
             container = document.createElement('div');
@@ -9,22 +10,22 @@
             document.body.appendChild(container);
         }
         
-        // Create notification element
+        // Créer la notification
         const notification = document.createElement('div');
         notification.className = `notification ${type}`;
         
         notification.textContent = message;
         
-        // Add to container
+        // Ajout au conteneur
         container.appendChild(notification);
         
-        // Remove notification after animation completes
+        // Retirer la notifiaction après affichage
         setTimeout(() => {
             notification.remove();
         }, 5000);
     }
 
-    // Function to check URL parameters and show notification
+    // Fonction qui vérifie les paramètres URL, et affiche des notifications en conséquence
     function checkForErrors() {
         const urlParams = new URLSearchParams(window.location.search);
         const error = urlParams.get('error');
@@ -46,20 +47,18 @@
             const isSuccess = error.includes('success');
             showNotification(errorMessages[error], isSuccess ? 'success' : 'error');
             
-            // Clean up URL without reloading page
-            // const newUrl = window.location.pathname;
-            // window.history.pushState({}, '', newUrl);
         }
     }
 
     document.addEventListener('DOMContentLoaded', checkForErrors);
 
-
+//Affiche ou de masque le formulaire de changement de mot de passe
 function toggleChangePassword() {
     var form = document.getElementById("change-password-form");
     form.style.display = (form.style.display === "none") ? "block" : "none";
 }
 
+//Vérifie le type et la taille du fichier sélectionné par l'utilisateur
 function validateAndShowStatus(input) {
 const file = input.files[0];
 const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
@@ -72,23 +71,24 @@ return;
 
 if (!allowedTypes.includes(file.type)) {
 showToast("Seuls les fichiers JPEG, PNG et GIF sont autorisés.", "error");
-input.value = ''; // Reset input
+input.value = ''; 
 return;
 }
 
 if (file.size > maxSize) {
 showToast("La taille du fichier ne doit pas dépasser 5 Mo.", "error");
-input.value = ''; // Reset input
+input.value = ''; 
 return;
 }
 
 showToast("Fichier prêt à être soumis", "success");
 }
 
+//Affiche des notifications de type "toast"
 function showToast(message, type = "info") {
 let toastContainer = document.getElementById("toast-container");
 
-// If toast container doesn't exist, create it
+// Créer le conteneur toast s'il n'existe pas
 if (!toastContainer) {
 console.log("Creating toast container...");
 toastContainer = document.createElement("div");
@@ -96,19 +96,16 @@ toastContainer.id = "toast-container";
 document.body.appendChild(toastContainer);
 }
 
-console.log("Adding toast:", message); // Debugging log
+console.log("Adding toast:", message); // Débogage
 
-// Create toast
 const toast = document.createElement("div");
 toast.className = `toast ${type}`;
 toast.innerText = message;
 
-// Ensure it appears in the container
 toastContainer.appendChild(toast);
 console.log("Toast added:", toast);
 toast.style.opacity = "1";
 toast.style.display = "block";
-// Remove after 3 seconds
 setTimeout(() => {
 toast.style.opacity = "0";
 setTimeout(() => {
@@ -119,7 +116,7 @@ setTimeout(() => {
 }
 
 function showNotification(message, type = 'error') {
-// Create container if it doesn't exist
+// Créer le conteneur s'il n'existe pas
 let container = document.querySelector('.notification-container');
 if (!container) {
 container = document.createElement('div');
@@ -127,16 +124,16 @@ container.className = 'notification-container';
 document.body.appendChild(container);
 }
 
-// Create notification element
+// Créer la notification
 const notification = document.createElement('div');
 notification.className = 'notification \${type}';
 
 notification.textContent = message;
 
-// Add to container
+// Ajout au conteneur
 container.appendChild(notification);
 
-// Remove notification after animation completes
+// Retirer la notification après l'animation
 setTimeout(() => {
 notification.remove();
 }, 5000);
@@ -147,7 +144,10 @@ notification.remove();
 
 
 </script>
-<?php
+
+    <?php
+    
+    //L'utilisateur doit se connecter pour accéder à la page
 if (!isset($_SESSION['loggedIn'])) {
     echo '
     <style>
@@ -281,7 +281,7 @@ if(!file_exists($user['image'])){
 ?>
 
 
-<div class="profile-container">
+<div class="profile-container"> 
 <div class="profile-header">
     <div class="profile-picture-container">
         <div class="profile-picture">

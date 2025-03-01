@@ -22,7 +22,7 @@ $searchField = !empty($_POST['field']) ? $_POST['field'] : 'titre';
 $selectedGenre = !empty($_POST['genre']) ? $_POST['genre'] : null;
 
 $results = [];
-
+//Si un terme de recherche ou un genre a été sélectionné, une requête SQL est construite
 if ($searchTerm !== null || $selectedGenre !== null) {
     $sql = "SELECT * FROM Livres WHERE ($searchField LIKE ?)";
     $params = [$searchTerm ?: '%'];
@@ -44,7 +44,7 @@ echo generateHTMLHeader("Recherche de Livres", "styles.css");
 </div>
 
 <div id="content" class="content">
-    <!-- Search form section -->
+    <!-- Formulaire de recherche -->
     <div class="book-search-form-container">
 
          <form method="POST" >
@@ -70,7 +70,7 @@ echo generateHTMLHeader("Recherche de Livres", "styles.css");
                 </div>
             </div>
 
-            <!-- Genre filter dropdown -->
+            <!-- Filtre par genre -->
             <div class="filter-dropdown">
                 <select name="genre" class="book-genre-filter">
                     <option value="">Tous les genres</option>
@@ -87,7 +87,7 @@ echo generateHTMLHeader("Recherche de Livres", "styles.css");
         </form>
     </div>
 
-    <!-- Results section -->
+    <!-- Résultats -->
     <div class="book-search-container">
         <?php if (!empty($_POST['search']) && empty($results)): ?>
             <div class="book-search-no-results">Aucun résultat trouvé pour votre recherche.</div>

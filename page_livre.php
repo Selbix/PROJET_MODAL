@@ -1,6 +1,7 @@
 <?php
 
 if (!isset($_SESSION['loggedIn'])) {
+    //Si l'utilisateur  n'est pas connecté
 
     echo '
     <style>
@@ -77,12 +78,14 @@ if (!isset($_SESSION['loggedIn'])) {
     </div>';
     exit();
 }
-$user = $_SESSION['user'];
 
+//Récupération de l'identifiant de session
+$user = $_SESSION['user'];
 if (isset($_GET['id'])) {
     $askedLivre = $_GET["id"];
-    $askedLivre = intval($askedLivre); // Sanitizing the input
+    $askedLivre = intval($askedLivre); 
 
+    //Récupérer le livre correspondant à l'ID donné
     $query = "SELECT * FROM Livres WHERE id = ?;";
     $stmt = $dbh->prepare($query);
    //$stmt->bindParam(':id', $askedLivre, PDO::PARAM_INT);
@@ -113,7 +116,7 @@ if (isset($_GET['id'])) {
 <?php
 $dbh = Database::connect();
 //var_dump($user);
-// Fetch the latest reviews with user names
+// Récupère les avis par utilisateurs
 $query = "SELECT u.id AS user_id, u.nom_utilisateur AS user_name, r.note, r.avis 
           FROM rating_livre r
           JOIN Utilisateurs u ON r.id_utilisateur = u.id
@@ -128,6 +131,7 @@ $stmt->execute([$books[0]['id']]);
 $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
 var_dump($reviews);
 ?>
+
 
 <div class="book-container2">
         <div class="book-image2">
@@ -152,14 +156,14 @@ var_dump($reviews);
                 
     <div class="star-rating">
         <?php
-        // Get the average rating for this book (you'll need to implement this)
-        $averageRating = 0; // Replace with actual average rating
+        $averageRating = 0; 
         
         for ($i = 1; $i <= 5; $i++) {
             echo "<span class='star' data-rating='$i'>★</span>";
         }
         ?>
     </div>
+                    
     <div>Nombre de votants</div>
 </div>
 <footer class="review-footer">
@@ -169,12 +173,12 @@ var_dump($reviews);
         <button class="review-carousel-btn left" onclick="scrollReviewCarousel(-1)">❮</button>
         <div class="review-carousel">
             <?php if (empty($reviews)): ?>
-                <!-- Show message when no reviews exist -->
+                <!-- Affiche le message quand il n'y a pas d'avis -->
                 <div class="no-reviews-card">
                     Aucun avis pour l'instant... Soyez le premier !
                 </div>
             <?php else: ?>
-                <!-- Display reviews -->
+                <!-- Affiche les avis -->
                 <?php foreach ($reviews as $review): ?>
                     <div class="review-card">
                         <div class="review-header">
@@ -232,10 +236,11 @@ function scrollReviewCarousel(direction) {
 </div>
 
 <script>
+//Liker un livre
 function likeBook(bookId, userId) {
     let formData = new FormData();
     formData.append("book_id", bookId);
-    formData.append("user_id", userId); // Send user ID from frontend
+    formData.append("user_id", userId); 
 
     fetch("like.php", {
         method: "POST",
@@ -259,8 +264,9 @@ function likeBook(bookId, userId) {
 
 
 <script>
+//Ecrire un avis 
 function submitReview(bookId, userId, rating) {
-    let reviewText = document.getElementById("reviewText").value.trim(); // Get review text
+    let reviewText = document.getElementById("reviewText").value.trim();
 
     let formData = new FormData();
     formData.append("book_id", bookId);
@@ -274,7 +280,7 @@ function submitReview(bookId, userId, rating) {
     })
     .then(response => response.json())
     .then(data => {
-        console.log(data); // Debugging
+        console.log(data); // Débogage
         if (data.status === "success") {
             alert("Avis publié! ⭐");
         } else {
@@ -291,7 +297,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const submitButton = document.getElementById("submitReview");
     const reviewText = document.getElementById("reviewText");
 
-    // ⭐ Handle Star Click Event (Open Modal)
+    // Gestion des étoiles
     stars.forEach((star) => {
         star.addEventListener("click", function () {
             selectedRating = this.getAttribute("data-rating");
@@ -299,12 +305,12 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // ❌ Close Modal When Clicking 'X'
+    // Fermeture avec le bouton 'X'
     closeModal.addEventListener("click", function () {
         modal.style.display = "none";
     });
 
-    // 📩 Submit Rating & Review
+    // Envoi de la note et de l'avis
     submitButton.addEventListener("click", function () {
         if (!loggedInUser || !loggedInUser.id) {
             alert("Vous devez être connecté pour laisser un avis.");
@@ -312,7 +318,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         submitReview(<?= $books[0]['id']; ?>, loggedInUser.id, selectedRating);
         modal.style.display = "none";
-        reviewText.value = ""; // Clear the input
+        reviewText.value = ""; 
     });
 });
 

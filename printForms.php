@@ -1,4 +1,6 @@
 <?php
+
+// Fonction qui génère un formulaire de connexion
 function printLoginForm($askedPage) {
     echo "<form method = 'post' action = 'index.php?todo=login&page=$askedPage'>";
     echo '<p>Login : <input type = "text" name = "login" required placeholder = "Utilisateur"/></p>';
@@ -7,6 +9,8 @@ function printLoginForm($askedPage) {
     echo '<p><input type="submit" value="Valider" /></p>';
     echo '</form>';
 }
+
+// Fonction qui génère un formulaire de déconnexion
 function printLogoutForm($askedPage) {
 echo "<form method = 'post' action = 'index.php?todo=logout&page=$askedPage'>";
 echo '<p><input type="submit" value="Se déconnecter" /></p>';

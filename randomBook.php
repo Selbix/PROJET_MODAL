@@ -1,8 +1,7 @@
 <?php
 
-
 // Inclure la connexion à la base de données
-include('database.php'); // Remplacez par le fichier contenant votre connexion PDO
+include('database.php'); 
 
 try {
     // Requête pour tirer un livre au hasard
