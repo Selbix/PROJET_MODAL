@@ -44,7 +44,7 @@ function recommendBooks($userId, $conn, $numRecommendations = 5) {
         return array_slice($books, 0, $numRecommendations);
     }
 
-    // Trouver les livres les mieux notés par ces utilisateurs similaires
+    // Trouver les livres les mieux notés par ces utilisateurs similaires - recommandation collaborative
     $stmt = $conn->prepare("
         SELECT id_titre, AVG(note) as avg_rating 
         FROM rating_livre 
