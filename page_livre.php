@@ -104,6 +104,7 @@ if (isset($_GET['id'])) {
 }
 
 
+
 //echo generateHTMLHeader($books[0]["titre"], "styles.css");
 //var_dump($books);
 //echo "<h1>". $book['titre']. "</h1>";
@@ -127,6 +128,14 @@ $stmt = $dbh->prepare($query);
 $stmt->execute([$books[0]['id']]);
 $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
 var_dump($reviews);
+
+$query = "SELECT AVG(CAST(note AS DECIMAL(10,2))) AS average_rating FROM rating_livre WHERE id_titre = ?";
+$stmt = $dbh->prepare($query);
+$stmt->execute([$books[0]['id']]);
+$result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$averageRating = isset($result['average_rating']) ? round($result['average_rating'], 1) : "Pas encore de notes";
+ var_dump($averageRating);
 ?>
 
 <div class="book-container2">
@@ -153,14 +162,14 @@ var_dump($reviews);
     <div class="star-rating">
         <?php
         // Get the average rating for this book (you'll need to implement this)
-        $averageRating = 0; // Replace with actual average rating
+        //$averageRating = 0; // Replace with actual average rating
         
         for ($i = 1; $i <= 5; $i++) {
             echo "<span class='star' data-rating='$i'>★</span>";
         }
         ?>
     </div>
-    <div>Nombre de votants</div>
+    <div>Note moyenne: <?php echo $averageRating; ?>/5</div>
 </div>
 <footer class="review-footer">
 <div class="review-carousel-container">
