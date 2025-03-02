@@ -8,6 +8,7 @@ require "printForms.php";
 require "livre.php";        
 require "register.php";     
 require "changePassword.php"; 
+require "recommendation-service.php";
 
 // Initialisation de la session avec un nom personnalisé
 session_name("Session_utilisateur");

@@ -89,8 +89,36 @@ echo generateHTMLHeader("Recherche de Livres", "styles.css");
 
     <!-- Results section -->
     <div class="book-search-container">
-        <?php if (!empty($_POST['search']) && empty($results)): ?>
-            <div class="book-search-no-results">Aucun résultat trouvé pour votre recherche.</div>
+    <?php if (!empty($_POST['search']) && empty($results)): ?>
+    <div class="book-search-no-results">
+        Aucun résultat trouvé pour votre recherche. <br>
+        Recherche sur Internet Archive...
+    </div>
+    <?php
+    $searchQuery = urlencode(trim($_POST['search'], '%'));
+    $apiUrl = "https://archive.org/advancedsearch.php?q=title:$searchQuery&fl[]=identifier,title,creator&output=json";
+    $archiveResponse = file_get_contents($apiUrl);
+    $archiveData = json_decode($archiveResponse, true);
+
+    if (!empty($archiveData['response']['docs'])) {
+        echo "<div class='book-search-results-grid'>";
+        foreach ($archiveData['response']['docs'] as $book) {
+            $identifier = htmlspecialchars($book['identifier']);
+            $coverUrl = "https://archive.org/services/img/$identifier"; // Cover URL
+
+            echo "<div class='book-search-result-card'>";
+            echo "<img src='$coverUrl' alt='Book Cover' class='book-cover' onerror=\"this.src='default-cover.jpg';\">"; // Display cover with fallback image
+            echo "<h2 class='book-search-result-title'>" . htmlspecialchars($book['title']) . "</h2>";
+            echo "<div class='book-search-result-author'>par " . htmlspecialchars($book['creator'] ?? 'Auteur inconnu') . "</div>";
+            echo "<a href='https://archive.org/details/$identifier' class='book-search-result-link' target='_blank'>Lire sur Internet Archive</a>";
+            echo "</div>";
+        }
+        echo "</div>";
+    } else {
+        echo "<div class='book-search-no-results'>Aucun livre trouvé sur Internet Archive.</div>";
+    }
+    ?>
+
         <?php elseif (!empty($results)): ?>
             <div class="book-search-results-grid">
                 <?php foreach ($results as $book): ?>

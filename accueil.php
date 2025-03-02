@@ -153,6 +153,8 @@ echo '</div>';
         echo '</div>';
     }
     echo '</div>';
+    
+    displayRecommendations($_SESSION["user"]["id"], $dbh, $numRecommendations = 10);
 ?>
 
 
