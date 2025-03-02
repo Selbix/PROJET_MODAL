@@ -1,13 +1,13 @@
 <?php
 // Inclusion des fichiers nécessaires 
-require "utils.php";        
-require "logInOut.php";     
-require "database.php";     
-require "utilisateur.php";  
-require "printForms.php";   
-require "livre.php";        
-require "register.php";     
-require "changePassword.php"; 
+require __DIR__ . "/utilitaires/utils.php";        
+require __DIR__ . "/utilitaires/logInOut.php";     
+require __DIR__ . "/BDD-gestion/database.php";     
+require __DIR__ . "/BDD-gestion/utilisateur.php";  
+require __DIR__ . "/BDD-gestion/livre.php";        
+require __DIR__ . "/utilitaires/register.php";     
+require __DIR__ . "/utilitaires/changePassword.php"; 
+require __DIR__ . "/utilitaires/recommendation-service.php"; 
 
 // Initialisation de la session avec un nom personnalisé
 session_name("Session_utilisateur");
@@ -45,6 +45,61 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
         $_SESSION['search_results'] = []; // Si une erreur survient, tableau vide
     }
 }
+function syncThumbnails() {
+    $sourceDir = __DIR__ . "/BDD-gestion/thumbnail";
+    $targetDir = __DIR__ . "/thumbnail";
+
+    // Vérifier si le dossier source existe
+    if (!is_dir($sourceDir)) {
+        error_log("Le répertoire source '$sourceDir' n'existe pas.");
+        return;
+    }
+
+    // Créer le répertoire cible s'il n'existe pas
+    if (!is_dir($targetDir)) {
+        if (!mkdir($targetDir, 0777, true)) {
+            error_log("Erreur lors de la création du répertoire '$targetDir'.");
+            return;
+        }
+    }
+
+    // Extensions de fichiers autorisées
+    $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+
+    // Lister les fichiers source
+    $sourceFiles = [];
+    foreach ($allowedExtensions as $ext) {
+        $sourceFiles = array_merge($sourceFiles, glob("$sourceDir/*.$ext"));
+    }
+
+    // Copier et mettre à jour les fichiers
+    foreach ($sourceFiles as $file) {
+        $fileName = basename($file);
+        $targetPath = "$targetDir/$fileName";
+
+        // Copier uniquement si le fichier n'existe pas ou est plus ancien
+        if (!file_exists($targetPath) || filemtime($file) > filemtime($targetPath)) {
+            if (!copy($file, $targetPath)) {
+                error_log("Erreur lors de la copie de '$fileName'.");
+            }
+        }
+    }
+
+    // Supprimer les fichiers obsolètes dans le répertoire cible
+    $targetFiles = glob("$targetDir/*");
+    foreach ($targetFiles as $file) {
+        $fileName = basename($file);
+        $sourcePath = "$sourceDir/$fileName";
+
+        // Supprimer les fichiers qui n'existent plus dans la source
+        if (!file_exists($sourcePath)) {
+            unlink($file);
+        }
+    }
+}
+
+// Appeler la fonction pour synchroniser les miniatures
+syncThumbnails();
 
 // Gestion des actions spécifiques 
 if (isset($_GET['todo'])) {
@@ -52,7 +107,7 @@ if (isset($_GET['todo'])) {
         case 'login':
             // Si l'action est 'login', on appelle la fonction logIn
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                //var_dump($_POST);
+                ////var_dump($_POST);
                 logIn($dbh);
             }
             break;
@@ -85,17 +140,17 @@ if(isset($_GET['page'])){
     $askedPage = $_GET["page"];
     $authorized = checkPage($askedPage); // Vérifie si la page est autorisée
     $titre = "Passeur de temps"; // Titre par défaut
-    $lien = "styles.css"; // Fichier CSS par défaut
+    $lien = "styles/styles.css"; // Fichier CSS par défaut
     $pageTitle = getPageTitle($askedPage); // Récupère le titre de la page demandée
     if($askedPage == "connexion"){ // Si la page est "connexion", on change le fichier CSS
-        $lien = "styles-loginout.css";
+        $lien = "styles/styles-loginout.css";
     }
 }
 else if(isset($_GET['id'])){
     // Si un ID de livre est passé dans l'URL, on charge la page du livre
     $askedPage = "page_livre";
     $pageTitle = "Livre";
-    $lien = "styles.css";
+    $lien = "styles/styles.css";
     $authorized = checkPage($askedPage); // Vérifie si la page est autorisée
 }
 
@@ -110,9 +165,9 @@ if(isset($_GET["todo"]) && $_GET["todo"] == "login") {
     logIn($dbh);
 }
 
-//var_dump($_SESSION);
+////var_dump($_SESSION);
 echo "<br>";*/
-//var_dump(password_verify("secret", '$2y$10$jFPYCoqfq5IrY1I0xASPX.OVLJxDHUR0G2S5OunyeI5LsnIwuvo8m'));
+////var_dump(password_verify("secret", '$2y$10$jFPYCoqfq5IrY1I0xASPX.OVLJxDHUR0G2S5OunyeI5LsnIwuvo8m'));
 // affichage de formulaires
 
 // code de sélection des pages, comme précédemment
@@ -149,7 +204,7 @@ if(isset($_GET['page']) && $_GET['page'] === 'connexion' && isset($_SESSION["log
 <div id="content" class="content">
     <?php
     // Inclus dynamiquement la page demandée par l'utilisateur
-    require "{$askedPage}.php";
+    require __DIR__ . "/pages/{$askedPage}.php";
     ?>
 </div>
 

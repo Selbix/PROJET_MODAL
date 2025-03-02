@@ -1,12 +1,11 @@
 <?php
-require "utils.php";
-require "logInOut.php";
-require "database.php";
-require "utilisateur.php";
-require "printForms.php";
-require "livre.php";
-require "register.php";
-require "changePassword.php";
+require $_SERVER['DOCUMENT_ROOT'] . "/PROJET_MODAL/utilitaires/utils.php";
+require $_SERVER['DOCUMENT_ROOT'] . "/PROJET_MODAL/utilitaires/logInOut.php";
+require $_SERVER['DOCUMENT_ROOT'] . "/PROJET_MODAL/BDD-gestion/database.php";
+require $_SERVER['DOCUMENT_ROOT'] . "/PROJET_MODAL/BDD-gestion/utilisateur.php";
+require $_SERVER['DOCUMENT_ROOT'] . "/PROJET_MODAL/BDD-gestion/livre.php";
+require $_SERVER['DOCUMENT_ROOT'] . "/PROJET_MODAL/utilitaires/register.php";
+
 session_name("Session_utilisateur");
 session_start();
 if (!isset($_SESSION['initiated'])){
@@ -91,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_user'])) {
 }
 
 // Chercher les livres, avis, utilisateurs pour les rassembler dans un tableau
-$books = $dbh->query("SELECT id, titre, auteur, date_parution, nombre_notes FROM Livres ORDER BY id DESC")->fetchAll();
+$books = $dbh->query("SELECT id, titre, auteur, date_parution FROM Livres ORDER BY id DESC")->fetchAll();
 $reviews = $dbh->query("SELECT rating_livre.id, Livres.titre, Utilisateurs.nom_utilisateur, rating_livre.note, rating_livre.avis FROM rating_livre INNER JOIN Livres ON rating_livre.id_titre = Livres.id INNER JOIN Utilisateurs ON rating_livre.id_utilisateur = Utilisateurs.id ORDER BY rating_livre.id DESC")->fetchAll();
 $users = $dbh->query("SELECT u.id, u.nom_utilisateur, u.email, u.quote, a.id as admin_id FROM Utilisateurs u LEFT JOIN administateurs a ON u.id = a.id_utilisateurs ORDER BY u.id DESC")->fetchAll();
     
@@ -120,11 +119,11 @@ $users = $dbh->query("SELECT u.id, u.nom_utilisateur, u.email, u.quote, a.id as 
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Book ID</th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Publication Date</th>
-                <th>Number of Reviews</th>
+                <th>ID Livre</th>
+                <th>Titre</th>
+                <th>Auteur</th>
+                <th>Date de parution</th>
+                <!-- <th>Nombre d'avis</th> -->
                 <th>Action</th>
             </tr>
         </thead>
@@ -135,7 +134,7 @@ $users = $dbh->query("SELECT u.id, u.nom_utilisateur, u.email, u.quote, a.id as 
                 <td><?= htmlspecialchars($book['titre']); ?></td>
                 <td><?= htmlspecialchars($book['auteur']); ?></td>
                 <td><?= htmlspecialchars($book['date_parution']); ?></td>
-                <td><?= htmlspecialchars($book['nombre_notes']); ?></td>
+                <!-- <td><?= htmlspecialchars($book['nombre_notes']); ?></td> -->
                 <td>
                     <form method="POST">
                         <input type="hidden" name="book_id" value="<?= $book['id']; ?>">
@@ -152,11 +151,11 @@ $users = $dbh->query("SELECT u.id, u.nom_utilisateur, u.email, u.quote, a.id as 
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Review ID</th>
-                <th>Book Title</th>
-                <th>User</th>
-                <th>Rating</th>
-                <th>Review</th>
+                <th>ID Avis</th>
+                <th>Titre du livre</th>
+                <th>Utilisateur</th>
+                <th>Note</th>
+                <th>Avis</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -198,7 +197,7 @@ $users = $dbh->query("SELECT u.id, u.nom_utilisateur, u.email, u.quote, a.id as 
                 
             <tr>
             <?php 
-            //var_dump($user);
+            ////var_dump($user);
 if(file_exists("uploads/" . $user['id'] . ".jpg")) {
     $user["profile_pic"] = "uploads/" . $user['id'] . ".jpg";
 } else {

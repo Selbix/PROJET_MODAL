@@ -1,0 +1,290 @@
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom, rgba(212, 225, 87, 0.5), rgba(174, 213, 129, 0.5)); /* Fond en teintes de vert transparent */
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 10px;
+}
+h2{
+    margin: auto;
+    width : 80%;
+    font-weight: 800;
+    font-family : 'Courier New', Courier, monospace;
+    letter-spacing: 5px;
+}
+label {
+font-weight: bold;
+font-family : 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+.logo {
+    height: 200px; /* Doubler la taille de l'image */
+}
+.nav-link {
+    font-family : 'Courier New', Courier, monospace;
+
+}
+.nav-item a:hover {
+    color: #264143;
+    background-color: #264143;
+    z-index: 1000;
+    height: 100%;
+}
+.ontop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: #2d4b2d !important;
+    margin-top: 0;
+}
+#content {
+    margin-top : 100px;
+}
+
+/* From Uiverse.io by mi-series */
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 40px; /* Séparer davantage les blocs */
+}
+
+.form_area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: rgba(200, 230, 201, 0.9); /* Utiliser une teinte de vert transparente */
+    height: auto;
+    width: auto;
+    border: 2px solid #264143;
+    border-radius: 20px;
+    box-shadow: 3px 4px 0px 1px rgba(165, 214, 167, 0.9); /* Utiliser une teinte de vert transparente */
+}
+
+.title {
+    color: #264143;
+    font-weight: 900;
+    font-size: 1.5em;
+    margin-top: 20px;
+}
+
+.sub_title {
+    font-weight: 600;
+    margin: 5px 0;
+}
+
+.form_group {
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    margin: 10px;
+}
+
+.form_style {
+    outline: none;
+    border: 2px solid #264143;
+    box-shadow: 3px 4px 0px 1px rgba(165, 214, 167, 0.9); /* Utiliser une teinte de vert transparente */
+    width: 290px;
+    padding: 12px 10px;
+    border-radius: 4px;
+    font-size: 15px;
+}
+
+.form_style:focus, .btn:focus {
+    transform: translateY(4px);
+    box-shadow: 1px 2px 0px 0px rgba(165, 214, 167, 0.9); /* Utiliser une teinte de vert transparente */
+}
+
+.btn {
+    padding: 15px;
+    margin: 25px 0px;
+    width: 290px;
+    font-size: 15px;
+    background: rgba(129, 199, 132, 0.9); /* Utiliser une teinte de vert transparente */
+    border-radius: 10px;
+    font-weight: 800;
+    box-shadow: 3px 3px 0px 0px rgba(165, 214, 167, 0.9); /* Utiliser une teinte de vert transparente */
+}
+
+.btn:hover {
+    opacity: .9;
+}
+
+.link {
+    font-weight: 800;
+    color: #264143;
+    padding: 5px;
+}
+
+/* RECURRING ELEMENTS */
+#content {
+    margin-top : 100px;
+}
+
+.ontop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: #2d4b2d !important;
+    margin-top: 0;
+}
+.custom-nav {
+    background-color: #2d4b2d !important;
+    padding: 0.5rem 1rem;
+}
+
+/* Updated logo styles */
+.nav-logo {
+    height: 60px; /* Increased from 40px */
+}
+
+.navbar-brand {
+    margin-right: 2rem;
+    padding: 0; /* Added to remove default padding */
+    display: flex; /* Added to ensure proper logo alignment */
+    align-items: center; /* Added to vertically center the logo */
+}
+
+/* Rest of the styles remain the same */
+.nav-link {
+    color: white !important;
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem !important;
+}
+
+.nav-link:hover {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Search Form Styles */
+.search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-input {
+    background-color: #1e2937;
+    border: none;
+    color: white;
+    padding-right: 40px;
+    width: 250px;
+}
+
+.search-input::placeholder {
+    color: #6b7280;
+}
+
+.btn-search {
+    position: absolute;
+    right: 0;
+    background-color: #22c55e;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 4px;
+}
+
+.btn-search i {
+    color: white;
+}
+
+.btn-filter {
+    background-color: white;
+    border-radius: 4px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/*ERROR ANIMATION A GARDER ET NE PAS CHANGER*/
+.notification-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+/* Individual notification styling */
+.notification {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-left: 4px solid #f5c6cb;
+    padding: 12px 24px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 300px;
+    font-size: 14px;
+    
+    /* Initial state for animation */
+    opacity: 0;
+    transform: translateX(100%);
+    
+    /* Animation properties */
+    animation: slideIn 0.5s forwards, fadeOut 0.5s forwards 4.5s;
+}
+
+/* Different types of notifications */
+.notification.error {
+    background-color: #f8d7da;
+    border-left-color: #dc3545;
+}
+
+.notification.success {
+    background-color: #d4edda;
+    color: #155724;
+    border-left-color: #28a745;
+}
+
+.notification.warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border-left-color: #ffc107;
+}
+
+/* Animations */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+}

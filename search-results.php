@@ -1,12 +1,12 @@
 <?php
-require "utils.php";
-require "logInOut.php";
-require "database.php";
-require "utilisateur.php";
-require "printForms.php";
-require "livre.php";
-require "register.php";
-require "changePassword.php";
+require $_SERVER['DOCUMENT_ROOT'] . "/PROJET_MODAL/utilitaires/utils.php";
+require $_SERVER['DOCUMENT_ROOT'] . "/PROJET_MODAL/utilitaires/logInOut.php";
+require $_SERVER['DOCUMENT_ROOT'] . "/PROJET_MODAL/BDD-gestion/database.php";
+require $_SERVER['DOCUMENT_ROOT'] . "/PROJET_MODAL/BDD-gestion/utilisateur.php";
+require $_SERVER['DOCUMENT_ROOT'] . "/PROJET_MODAL/BDD-gestion/livre.php";
+require $_SERVER['DOCUMENT_ROOT'] . "/PROJET_MODAL/utilitaires/register.php";
+
+
 
 session_name("Session_utilisateur");
 session_start();
@@ -37,7 +37,7 @@ if ($searchTerm !== null || $selectedGenre !== null) {
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-echo generateHTMLHeader("Recherche de Livres", "styles.css");
+echo generateHTMLHeader("Recherche de Livres", "styles/styles.css");
 ?>
 <div class="container-fluid ontop">
     <?php echo generateMenu(); ?>
@@ -89,15 +89,42 @@ echo generateHTMLHeader("Recherche de Livres", "styles.css");
 
     <!-- Results section -->
     <div class="book-search-container">
-        <?php if (!empty($_POST['search']) && empty($results)): ?>
-            <div class="book-search-no-results">Aucun résultat trouvé pour votre recherche.</div>
+    <?php if (!empty($_POST['search']) && empty($results)): ?>
+    <div class="book-search-no-results">
+        Aucun résultat trouvé pour votre recherche. <br>
+        Recherche sur Internet Archive...
+    </div>
+    <?php
+    $searchQuery = urlencode(trim($_POST['search'], '%'));
+    $apiUrl = "https://archive.org/advancedsearch.php?q=title:$searchQuery&fl[]=identifier,title,creator&output=json";
+    $archiveResponse = file_get_contents($apiUrl);
+    $archiveData = json_decode($archiveResponse, true);
+
+    if (!empty($archiveData['response']['docs'])) {
+        echo "<div class='book-search-results-grid'>";
+        foreach ($archiveData['response']['docs'] as $book) {
+            $identifier = htmlspecialchars($book['identifier']);
+            $coverUrl = "https://archive.org/services/img/$identifier"; // Cover URL
+
+            echo "<div class='book-search-result-card'>";
+            echo "<img src='$coverUrl' alt='Book Cover' class='book-cover' onerror=\"this.src='default-cover.jpg';\">"; // Display cover with fallback image
+            echo "<h2 class='book-search-result-title'>" . htmlspecialchars($book['title']) . "</h2>";
+            echo "<div class='book-search-result-author'>par " . htmlspecialchars($book['creator'] ?? 'Auteur inconnu') . "</div>";
+            echo "<a href='https://archive.org/details/$identifier' class='book-search-result-link' target='_blank'>Lire sur Internet Archive</a>";
+            echo "</div>";
+        }
+        echo "</div>";
+    } else {
+        echo "<div class='book-search-no-results'>Aucun livre trouvé sur Internet Archive.</div>";
+    }
+    ?>
         <?php elseif (!empty($results)): ?>
             <div class="book-search-results-grid">
                 <?php foreach ($results as $book): ?>
                     <div class="book-search-result-card">
                         <?php
                         $coverPath = "thumbnail/" . $book['id'] . ".jpg";
-                        $pdfPath = "books/" . $book['id'] . ".pdf";
+                        $pdfPath = "BDD-gestion/books/" . $book['id'] . ".pdf";
                         ?>
                         
                         <?php if (file_exists($coverPath)): ?>
