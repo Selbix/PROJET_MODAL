@@ -18,6 +18,7 @@ function recommendBooks($userId, $conn, $numRecommendations = 5) {
     $userInteractions = getUserInteractions($userId, $conn);
     $books = getBookMetadata($conn);
 
+    // Si l'utilisateur n'a noté aucun livre, recommander les derniers livres ajoutés
     if (empty($userInteractions)) {
         usort($books, function($a, $b) {
             return $b['id'] - $a['id'];
@@ -25,9 +26,51 @@ function recommendBooks($userId, $conn, $numRecommendations = 5) {
         return array_slice($books, 0, $numRecommendations);
     }
 
-    $recommendedBooks = array_slice($books, 0, $numRecommendations);
-    return $recommendedBooks;
+    // Récupère la liste des ID des livres notés par l'utilisateur
+    $ratedBookIds = array_column($userInteractions, 'id_titre');
+
+    // Trouver des utilisateurs ayant noté les mêmes livres que l'utilisateur actuel
+    $stmt = $conn->prepare("
+        SELECT DISTINCT id_utilisateur 
+        FROM rating_livre 
+        WHERE id_titre IN (" . implode(',', $ratedBookIds) . ") 
+        AND id_utilisateur != :userId
+    ");
+    $stmt->bindValue(":userId", $userId, PDO::PARAM_INT);
+    $stmt->execute();
+    $similarUsers = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+    if (empty($similarUsers)) {
+        return array_slice($books, 0, $numRecommendations);
+    }
+
+    // Trouver les livres les mieux notés par ces utilisateurs similaires
+    $stmt = $conn->prepare("
+        SELECT id_titre, AVG(note) as avg_rating 
+        FROM rating_livre 
+        WHERE id_utilisateur IN (" . implode(',', $similarUsers) . ") 
+        AND id_titre NOT IN (" . implode(',', $ratedBookIds) . ") 
+        GROUP BY id_titre 
+        ORDER BY avg_rating DESC 
+        LIMIT :num
+    ");
+    $stmt->bindValue(":num", $numRecommendations, PDO::PARAM_INT);
+    $stmt->execute();
+    $recommendedBookIds = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+    if (empty($recommendedBookIds)) {
+        return array_slice($books, 0, $numRecommendations);
+    }
+
+    // Filtrer et récupérer les métadonnées des livres recommandés
+    $recommendedBooks = array_filter($books, function ($book) use ($recommendedBookIds) {
+        return in_array($book['id'], $recommendedBookIds);
+    });
+
+    return array_values($recommendedBooks);
 }
+
+
 
 function displayRecommendations($userId, $conn, $numRecommendations = 5) {
     $recommendations = recommendBooks($userId, $conn, $numRecommendations);
