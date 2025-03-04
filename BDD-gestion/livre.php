@@ -40,7 +40,10 @@ class Livres {
         $outputPathEscaped = escapeshellarg($outputPath);
         
         $convertScript = __DIR__ . '/convert.py';
-        $command = "/Users/samyelbakouri/opt/anaconda3/bin/python3 $convertScript $pdfPathEscaped $outputPathEscaped 2>&1";
+        $pythonPath = trim(shell_exec("which python3")); // Gets the system-wide Python path
+        $command = escapeshellcmd("$pythonPath $convertScript $pdfPathEscaped $outputPathEscaped 2>&1");
+
+        //$command = "/Users/samyelbakouri/opt/anaconda3/bin/python3 $convertScript $pdfPathEscaped $outputPathEscaped 2>&1";
         $output = shell_exec($command);
         
         // Logging for debugging
