@@ -463,7 +463,7 @@ label {
 
 /*REVIEW CARDS */
 /* Make sure footer sticks to the bottom */
-footer {
+.footer {
     width: 100%;
     max-width: 800px;
     background-color: #1a1a2e; /* Dark footer background */
@@ -518,6 +518,7 @@ footer {
     scroll-snap-align: start;
     text-align: left;
     align-items: center;
+    word-wrap: break-word;
 }
 
 /* Styling for review header (name & stars) */
@@ -552,6 +553,10 @@ footer {
 .review-content {
     font-size: 0.9rem;
     color: #e2e8f0;
+    white-space: normal; /* Allows text to wrap */
+    word-wrap: break-word; /* Ensures long words break */
+    overflow-wrap: break-word; /* Alternative for breaking words */
+    word-break: break-word; /* Ensures text does not overflow */
 }
 
 /* Fix scroll buttons inside the section */

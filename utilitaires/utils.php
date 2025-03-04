@@ -99,7 +99,8 @@ function checkForErrors() {
         'login_failed': 'Email ou mot de passe incorrect.',
         'system_error': 'Une erreur système est survenue. Veuillez réessayer.',
         'login_success': 'Connexion réussie !',
-        'registration_completed': 'Inscription réussie !'
+        'registration_completed': 'Inscription réussie !',
+        'upload_failed': 'Erreur lors de l\'upload du fichier, veuillez recommencer avec un PDF valide.',
     };
     
     if (error && errorMessages[error]) {
@@ -280,4 +281,98 @@ FIN;
     }
 
 ?>*/
+
+function syncThumbnails() {
+    $sourceDir = $_SERVER['DOCUMENT_ROOT'] . "/PROJET_MODAL/BDD-gestion/thumbnail";
+    $targetDir = $_SERVER['DOCUMENT_ROOT'] . "/PROJET_MODAL/thumbnail";
+
+    // Vérifier si le dossier source existe
+    if (!is_dir($sourceDir)) {
+        error_log("Le répertoire source '$sourceDir' n'existe pas.");
+        return;
+    }
+
+    // Créer le répertoire cible s'il n'existe pas
+    if (!is_dir($targetDir)) {
+        if (!mkdir($targetDir, 0777, true)) {
+            error_log("Erreur lors de la création du répertoire '$targetDir'.");
+            return;
+        }
+    }
+
+    // Extensions de fichiers autorisées
+    $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+
+    // Lister les fichiers source
+    $sourceFiles = [];
+    foreach ($allowedExtensions as $ext) {
+        $sourceFiles = array_merge($sourceFiles, glob("$sourceDir/*.$ext"));
+    }
+
+    // Copier et mettre à jour les fichiers
+    foreach ($sourceFiles as $file) {
+        $fileName = basename($file);
+        $targetPath = "$targetDir/$fileName";
+
+        // Copier uniquement si le fichier n'existe pas ou est plus ancien
+        if (!file_exists($targetPath) || filemtime($file) > filemtime($targetPath)) {
+            if (!copy($file, $targetPath)) {
+                error_log("Erreur lors de la copie de '$fileName'.");
+            }
+        }
+    }
+
+    // Supprimer les fichiers obsolètes dans le répertoire cible
+    $targetFiles = glob("$targetDir/*");
+    foreach ($targetFiles as $file) {
+        $fileName = basename($file);
+        $sourcePath = "$sourceDir/$fileName";
+
+        // Supprimer les fichiers qui n'existent plus dans la source
+        if (!file_exists($sourcePath)) {
+            unlink($file);
+        }
+    }
+}
+function syncBooks() {
+    $sourceDir = $_SERVER['DOCUMENT_ROOT'] . "/PROJET_MODAL/BDD-gestion/books";
+    $targetDir = $_SERVER['DOCUMENT_ROOT'] . "/PROJET_MODAL/books";
+
+    // Vérifier si le dossier source existe
+    if (!is_dir($sourceDir)) {
+        error_log("Le répertoire source '$sourceDir' n'existe pas.");
+        return;
+    }
+
+    // Créer le répertoire cible s'il n'existe pas
+    if (!is_dir($targetDir)) {
+        if (!mkdir($targetDir, 0777, true)) {
+            error_log("Erreur lors de la création du répertoire '$targetDir'.");
+            return;
+        }
+    }
+
+    // Seules les extensions PDF sont autorisées
+    $allowedExtensions = ['pdf'];
+
+    // Lister les fichiers PDF dans le répertoire source
+    $sourceFiles = [];
+    foreach ($allowedExtensions as $ext) {
+        $sourceFiles = array_merge($sourceFiles, glob("$sourceDir/*.$ext"));
+    }
+
+    // Copier et mettre à jour les fichiers
+    foreach ($sourceFiles as $file) {
+        $fileName = basename($file);
+        $targetPath = "$targetDir/$fileName";
+
+        // Copier uniquement si le fichier n'existe pas ou est plus ancien
+        if (!file_exists($targetPath) || filemtime($file) > filemtime($targetPath)) {
+            if (!copy($file, $targetPath)) {
+                error_log("Erreur lors de la copie de '$fileName'.");
+            }
+        }
+    }
+}
+
 ?>

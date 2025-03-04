@@ -29,7 +29,7 @@ echo <<<FIN
         <textarea id="description" name="description" rows="4" required></textarea>
 
         <label for="file">Ajouter le document</label>
-        <input type="file" id="file" name="file" required>
+        <input type="file" id="file" name="file"  required accept="application/pdf">
 
         <button type="submit">Ajouter</button>
     </form>
@@ -43,8 +43,7 @@ FIN;
 //var_dump(is_uploaded_file($_FILES['file']['tmp_name']));
 
 // Vérification si un fichier a bien été téléchargé et est valide
-    if (!empty($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']
-['tmp_name'])) {
+    if (!empty($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name']) && $_FILES['file']['type'] == "application/pdf") {
     // Si le fichier est valide, on insère les données du livre dans la base de données
     // Appel de la méthode insererLivre de la classe Livres pour enregistrer les informations
     Livres::insererLivre( $dbh, $_POST["titre"],  $_POST["auteur"], $_POST["genre"], $_POST["date_sortie"], $_POST["description"],  $_FILES["file"]["type"],  $_FILES["file"]["tmp_name"]);
@@ -52,6 +51,7 @@ FIN;
   }
   else {
     //echo "Erreur lors de l'upload du fichier";
+    //showNotification("upload_failed", 'error');
   }
 
 

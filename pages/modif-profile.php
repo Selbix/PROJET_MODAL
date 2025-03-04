@@ -301,7 +301,7 @@ if(!file_exists($user['image'])){
         <span class="text">
             <span>Choisir une image</span>
 </span>
-        <input type="file" id="file" name="image" accept=".jpg,.jpeg,.png,.gif" onchange="validateAndShowStatus(this)">
+        <input type="file" id="file" name="image" accept=".jpg" onchange="validateAndShowStatus(this)">
         </label>
         <button type="submit" class="btn">Mettre à jour la photo de profil</button>
         </form>

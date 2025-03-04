@@ -45,61 +45,10 @@ if (isset($_GET['search']) && !empty($_GET['search'])) {
         $_SESSION['search_results'] = []; // Si une erreur survient, tableau vide
     }
 }
-function syncThumbnails() {
-    $sourceDir = __DIR__ . "/BDD-gestion/thumbnail";
-    $targetDir = __DIR__ . "/thumbnail";
-
-    // Vérifier si le dossier source existe
-    if (!is_dir($sourceDir)) {
-        error_log("Le répertoire source '$sourceDir' n'existe pas.");
-        return;
-    }
-
-    // Créer le répertoire cible s'il n'existe pas
-    if (!is_dir($targetDir)) {
-        if (!mkdir($targetDir, 0777, true)) {
-            error_log("Erreur lors de la création du répertoire '$targetDir'.");
-            return;
-        }
-    }
-
-    // Extensions de fichiers autorisées
-    $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
-
-    // Lister les fichiers source
-    $sourceFiles = [];
-    foreach ($allowedExtensions as $ext) {
-        $sourceFiles = array_merge($sourceFiles, glob("$sourceDir/*.$ext"));
-    }
-
-    // Copier et mettre à jour les fichiers
-    foreach ($sourceFiles as $file) {
-        $fileName = basename($file);
-        $targetPath = "$targetDir/$fileName";
-
-        // Copier uniquement si le fichier n'existe pas ou est plus ancien
-        if (!file_exists($targetPath) || filemtime($file) > filemtime($targetPath)) {
-            if (!copy($file, $targetPath)) {
-                error_log("Erreur lors de la copie de '$fileName'.");
-            }
-        }
-    }
-
-    // Supprimer les fichiers obsolètes dans le répertoire cible
-    $targetFiles = glob("$targetDir/*");
-    foreach ($targetFiles as $file) {
-        $fileName = basename($file);
-        $sourcePath = "$sourceDir/$fileName";
-
-        // Supprimer les fichiers qui n'existent plus dans la source
-        if (!file_exists($sourcePath)) {
-            unlink($file);
-        }
-    }
-}
 
 // Appeler la fonction pour synchroniser les miniatures
 syncThumbnails();
+syncBooks();
 
 // Gestion des actions spécifiques 
 if (isset($_GET['todo'])) {
@@ -187,7 +136,7 @@ $stmt->execute([$user_id]);
 $admin = $stmt->fetch();
 if($admin){
     // Si l'utilisateur est administrateur, afficher un lien vers le panneau d'administration
-    echo '<a href="admin.php" class="floating-admin-button">Admin Panel</a>';
+    echo '<a href="admin.php" class="floating-admin-button">Portail Admin</a>';
 }
 
 // Redirection si l'utilisateur est déjà connecté et essaie d'accéder à la page de connexion
@@ -207,6 +156,12 @@ if(isset($_GET['page']) && $_GET['page'] === 'connexion' && isset($_SESSION["log
     require __DIR__ . "/pages/{$askedPage}.php";
     ?>
 </div>
+
+<div style="position: fixed; bottom: 8px; left: 50%; transform: translateX(-50%); font-size: 12px; color: rgba(255, 255, 255, 0.25); font-family: Arial, sans-serif; opacity: 0.8; pointer-events: none; white-space: nowrap;">
+    Modal X2023 © Samy El Bakouri et Alexandre Buendia
+</div>
+
+
 
 </html>
 

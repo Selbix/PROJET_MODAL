@@ -64,7 +64,7 @@ for ($i = 0; $i < $numBooks; $i++) {
    $url = "index.php?id=" . $books[$i]["id"];
    $thumbnailPath = "thumbnail/" . $books[$i]["id"] . ".jpg";
    echo '<div class="carousel-item">';
-   echo "<a href='$url' target=_blank>";
+   echo "<a href='$url' >";
    echo '<div class="book-cover" style="background: url(' . htmlspecialchars($thumbnailPath) . ') center/cover no-repeat;">';
    echo '</div>';
    echo '</a>';
@@ -100,7 +100,7 @@ for ($i = 0; $i < $numBooks; $i++) {
    $url = "index.php?id=" . $books[$i]["id"];
    $thumbnailPath = "thumbnail/" . $books[$i]["id"] . ".jpg";
    echo '<div class="carousel-item">';
-   echo "<a href='$url' target=_blank>";
+   echo "<a href='$url' >";
    echo '<div class="book-cover" style="background: url(' . htmlspecialchars($thumbnailPath) . ') center/cover no-repeat;">';
    echo '</div>';
    echo '</a>';
@@ -145,7 +145,7 @@ echo '</div>';
         $thumbnailPath = "thumbnail/" . $books[$i]["id"] . ".jpg";
         
         echo '<div class="carousel-item">';
-        echo "<a href='$url' target=_blank>";
+        echo "<a href='$url' >";
         echo '<div class="book-cover" style="background: url(' . htmlspecialchars($thumbnailPath) . ') center/cover no-repeat;">';
         echo '</div>';
         echo '</a>';
@@ -154,6 +154,8 @@ echo '</div>';
     }
     echo '</div>';
     displayRecommendations($_SESSION["user"]["id"], $dbh, $numRecommendations = 10);
+
+echo "</body>";
 ?>
 
 

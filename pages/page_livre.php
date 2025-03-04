@@ -172,7 +172,7 @@ $averageRating = isset($result['average_rating']) ? round($result['average_ratin
     </div>
     <div>Note moyenne: <?php echo $averageRating; ?>/5</div>
 </div>
-<footer class="review-footer">
+<footer class="review-footer footer">
 <div class="review-carousel-container">
     <h2>Avis des lecteurs</h2>
     <div class="review-wrapper">

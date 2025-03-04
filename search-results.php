@@ -80,6 +80,7 @@ echo generateHTMLHeader("Recherche de Livres", "styles/styles.css");
                     <option value="Science-fiction" <?php echo ($selectedGenre === 'Science-fiction') ? 'selected' : ''; ?>>Science-fiction</option>
                     <option value="Scolaire" <?php echo ($selectedGenre === 'Scolaire') ? 'selected' : ''; ?>>Scolaire</option>
                     <option value="Théâtre" <?php echo ($selectedGenre === 'Théâtre') ? 'selected' : ''; ?>>Théâtre</option>
+                    option value="Théâtre" <?php echo ($selectedGenre === 'Théâtre') ? 'selected' : ''; ?>>Article</option>
                 </select>
             </div>
 
@@ -87,7 +88,7 @@ echo generateHTMLHeader("Recherche de Livres", "styles/styles.css");
         </form>
     </div>
 
-    <!-- Results section -->
+    <!-- Affichage des résultats -->
     <div class="book-search-container">
     <?php if (!empty($_POST['search']) && empty($results)): ?>
     <div class="book-search-no-results">
@@ -95,6 +96,7 @@ echo generateHTMLHeader("Recherche de Livres", "styles/styles.css");
         Recherche sur Internet Archive...
     </div>
     <?php
+    //Communication avec l'API d'Internet Archive
     $searchQuery = urlencode(trim($_POST['search'], '%'));
     $apiUrl = "https://archive.org/advancedsearch.php?q=title:$searchQuery&fl[]=identifier,title,creator&output=json";
     $archiveResponse = file_get_contents($apiUrl);
